@@ -40,7 +40,7 @@ with \code{desc_stub} to create the parameterized test names.
 }
 \examples{
 with_parameters_test_that("trigonometric functions match identities", {
-    expect_equal(expr, numeric_value)
+    testthat::expect_equal(expr, numeric_value)
   },
   expr = c(sin(pi / 4), cos(pi / 4), tan(pi / 4)),
   numeric_value = c(1 / sqrt(2), 1 / sqrt(2), 1)
@@ -48,7 +48,7 @@ with_parameters_test_that("trigonometric functions match identities", {
 
 # Run the same test with the cases() constructor
 with_parameters_test_that("trigonometric functions match identities", {
-    expect_equal(expr, numeric_value)
+    testthat::expect_equal(expr, numeric_value)
   },
   cases(
     sin = list(expr = sin(pi / 4), numeric_value = 1 / sqrt(2)),

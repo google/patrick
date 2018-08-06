@@ -85,3 +85,7 @@ in Python.
 
 Please read the [`CONTRIBUTING.md`](CONTRIBUTING.md) for details on how to
 contribute to this project.
+
+## Disclaimer
+
+This is not an officially supported Google product.
