@@ -4,12 +4,12 @@
 \name{patrick}
 \alias{patrick}
 \alias{patrick-package}
-\title{Parameterized testing in R.}
+\title{Parameterized Unit Testing}
 \description{
 \code{patrick} (parameterized testing in R is kind of cool!) is a \code{testthat}
 extension that lets you create reusable blocks of a test codes. Parameterized
 tests are often easier to read and more reliable, since they follow the DNRY
-(do not repeate yourself) rule.
+(do not repeat yourself) rule.
 }
 \details{
 This package is inspired by parameterized testing packages in other

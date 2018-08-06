@@ -1,10 +1,11 @@
 Package: patrick
-Title: Parameterized testing in R
+Title: Parameterized Unit Testing
 Author: Michael Quinn <msquinn@google.com>
 Maintainer: Michael Quinn <msquinn@google.com>
-Description: This is an extention of the testthat package that lets you add
-  parameters to your test. Parameterized tests are often easier to read and
-  more reliable, since they follow the DNRY (do not repeate yourself) rule.
+Description: This is an extension of the 'testthat' package that lets you add
+  parameters to your unit tests. Parameterized unit tests are often easier to
+  read and more reliable, since they follow the DNRY (do not repeat yourself)
+  rule.
 Version: 0.0.1
 Depends: R (>= 3.1)
 Imports: dplyr, purrr, rlang, testthat, tibble

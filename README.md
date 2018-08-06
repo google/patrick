@@ -1,11 +1,19 @@
 # Introducing patrick
 
-This package is an extension to `testthat` that enables parameterized testing in
-R.
+This package is an extension to `testthat` that enables parameterized unit
+testing in R.
 
 ## Installing
 
-`patrick` is currently only available on GitHub. Install it using `devtools`.
+The release version of `patrick` is available on CRAN. Install it in the usual
+manner:
+
+```
+install.packages("patrick")
+```
+
+The development version of `patrick` is currently only available on GitHub.
+Install it using `devtools`.
 
 ```
 devtools::install_github("google/patrick")
@@ -54,9 +62,9 @@ with_parameters_test_that("Data is successfully converted:", {
 
 Parameterized tests behave exactly the same as standard `testthat` tests. Per
 usual, you call all of your tests with `devtools::test`, and they'll also run
-during package checks. Each executes independently and the your test report will
-produce a single report. A complete name for each test will be formed using the
-initial test description and the strings in the `test_name` parameter.
+during package checks. Each executes independently and then your test report
+will produce a single report. A complete name for each test will be formed using
+the initial test description and the strings in the `test_name` parameter.
 
 Small sets of cases can be reasonably passed a parameters to
 `with_parameters_test_that`. This becomes less readable when the number of cases

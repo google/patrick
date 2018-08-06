@@ -12,12 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-#' Parameterized testing in R.
+#' Parameterized Unit Testing
 #'
 #' `patrick` (parameterized testing in R is kind of cool!) is a `testthat`
 #' extension that lets you create reusable blocks of a test codes. Parameterized
 #' tests are often easier to read and more reliable, since they follow the DNRY
-#' (do not repeate yourself) rule.
+#' (do not repeat yourself) rule.
 #'
 #' This package is inspired by parameterized testing packages in other
 #' languages, notably the
