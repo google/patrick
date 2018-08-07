@@ -54,7 +54,7 @@ with_parameters_test_that("Data is successfully converted:", {
 
 Parameterized tests behave exactly the same as standard `testthat` tests. Per
 usual, you call all of your tests with `devtools::test`, and they'll also run
-during package checks. Each executes independently and the your test report will
+during package checks. Each executes independently and then your test report will
 produce a single report. A complete name for each test will be formed using the
 initial test description and the strings in the `test_name` parameter.
 
