@@ -1,3 +1,5 @@
+[![CRAN](https://www.r-pkg.org/badges/version/patrick)](https://cran.r-project.org/package=patrick)
+
 # Introducing patrick
 
 This package is an extension to `testthat` that enables parameterized unit
