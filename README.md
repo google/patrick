@@ -68,7 +68,7 @@ during package checks. Each executes independently and then your test report
 will produce a single report. A complete name for each test will be formed using
 the initial test description and the strings in the `test_name` parameter.
 
-Small sets of cases can be reasonably passed a parameters to
+Small sets of cases can be reasonably passed as parameters to
 `with_parameters_test_that`. This becomes less readable when the number of cases
 increases. To help mitigate this issue, `patrick` provides a case generator
 helper function.
