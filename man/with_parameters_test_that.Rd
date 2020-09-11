@@ -39,7 +39,8 @@ completed test name. Similarly, the named argument from `cases()` is combined
 with `desc_stub` to create the parameterized test names.
 }
 \examples{
-with_parameters_test_that("trigonometric functions match identities", {
+with_parameters_test_that("trigonometric functions match identities",
+  {
     testthat::expect_equal(expr, numeric_value)
   },
   expr = c(sin(pi / 4), cos(pi / 4), tan(pi / 4)),
@@ -47,7 +48,9 @@ with_parameters_test_that("trigonometric functions match identities", {
 )
 
 # Run the same test with the cases() constructor
-with_parameters_test_that("trigonometric functions match identities", {
+with_parameters_test_that(
+  "trigonometric functions match identities",
+  {
     testthat::expect_equal(expr, numeric_value)
   },
   cases(
