@@ -37,7 +37,8 @@
 #' @param .cases A data frame where each row contains test parameters.
 #' @param ... Named arguments of test parameters.
 #' @examples
-#' with_parameters_test_that("trigonometric functions match identities", {
+#' with_parameters_test_that("trigonometric functions match identities",
+#'   {
 #'     testthat::expect_equal(expr, numeric_value)
 #'   },
 #'   expr = c(sin(pi / 4), cos(pi / 4), tan(pi / 4)),
@@ -45,7 +46,9 @@
 #' )
 #'
 #' # Run the same test with the cases() constructor
-#' with_parameters_test_that("trigonometric functions match identities", {
+#' with_parameters_test_that(
+#'   "trigonometric functions match identities",
+#'   {
 #'     testthat::expect_equal(expr, numeric_value)
 #'   },
 #'   cases(
