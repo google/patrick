@@ -93,8 +93,9 @@ in Python.
 
 ## Contributing
 
-Please read the [`CONTRIBUTING.md`](CONTRIBUTING.md) for details on how to
-contribute to this project.
+Please read the
+[`CONTRIBUTING.md`](https://github.com/google/patrick/blob/master/CONTRIBUTING.md)
+for details on how to contribute to this project.
 
 ## Disclaimer
 

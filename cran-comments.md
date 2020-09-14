@@ -1,5 +1,7 @@
 # Cran comments for patrick 0.0.2 release
 
+*   Used full github link to CONTRIBUTING.md in README.md
+
 ## Test environments
 
 *   local R installation, R 4.0.1
