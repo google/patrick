@@ -14,7 +14,8 @@
 
 context("Parameterized tests")
 
-with_parameters_test_that("Running tests:",
+with_parameters_test_that(
+  "Running tests:",
   {
     if (test_name == "success") {
       testthat::expect_success(testthat::expect_true(case))
@@ -27,7 +28,8 @@ with_parameters_test_that("Running tests:",
   case = list(TRUE, FALSE, NULL),
 )
 
-with_parameters_test_that("Names are added",
+with_parameters_test_that(
+  "Names are added",
   {
     testthat::expect_true(test_name == "")
   },
@@ -42,5 +44,18 @@ with_parameters_test_that(
   cases(
     one = list(vec = 1, len = 1),
     ten = list(vec = 1:10, len = 10)
+  )
+)
+
+with_parameters_test_that(
+  "Data frames can be passed to cases:",
+  {
+    result <- rlang::as_function(FUN)(input)
+    testthat::expect_equal(result, out)
+  },
+  .cases = tibble::tribble(
+    ~ test_name, ~ FUN,     ~ input,  ~ out,
+    "times",     ~ .x * 2,        2,      4,
+    "plus",      ~ .x + 3,        3,      6
   )
 )

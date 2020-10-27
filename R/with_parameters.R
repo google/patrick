@@ -57,6 +57,24 @@
 #'     tan = list(expr = tan(pi / 4), numeric_value = 1)
 #'   )
 #' )
+#'
+#' # Or, pass a dataframe of cases, perhaps using a helper function
+#' make_cases <- function() {
+#'   tibble::tribble(
+#'     ~ test_name, ~ expr,      ~ numeric_value,
+#'     "sin",       sin(pi / 4),     1 / sqrt(2),
+#'     "cos",       cos(pi / 4),     1 / sqrt(2),
+#'     "tan",       tan(pi / 4),     1
+#'   )
+#' }
+#'
+#' with_parameters_test_that(
+#'   "trigonometric functions match identities",
+#'   {
+#'     testthat::expect_equal(expr, numeric_value)
+#'   },
+#'   .cases = make_cases()
+#' )
 #' @export
 with_parameters_test_that <- function(desc_stub, code, ..., .cases = NULL) {
   if (!is.null(.cases)) {
