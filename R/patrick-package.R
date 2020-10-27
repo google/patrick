@@ -17,13 +17,14 @@
 #' `patrick` (parameterized testing in R is kind of cool!) is a `testthat`
 #' extension that lets you create reusable blocks of a test codes. Parameterized
 #' tests are often easier to read and more reliable, since they follow the DNRY
-#' (do not repeat yourself) rule.
+#' (do not repeat yourself) rule. To do this, define tests with the function
+#' [with_parameters_test_that()]. Multiple approaches are provided for passing
+#' sets of cases.
 #'
 #' This package is inspired by parameterized testing packages in other
 #' languages, notably the
 #' [`parameterized`](https://github.com/wolever/parameterized) library in
 #' Python.
-#'
-#' @name patrick
-#' @docType package
-NULL
+#' @keywords internal
+#' @inherit with_parameters_test_that examples
+"_PACKAGE"
