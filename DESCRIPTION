@@ -1,6 +1,6 @@
 Package: patrick
 Title: Parameterized Unit Testing
-Version: 0.0.2.9999
+Version: 0.0.3
 Authors@R:
     person(given = "Michael",
            family = "Quinn",
