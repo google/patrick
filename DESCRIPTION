@@ -1,8 +1,11 @@
 Package: patrick
 Title: Parameterized Unit Testing
 Version: 0.0.2.9999
-Author: Michael Quinn <msquinn@google.com>
-Maintainer: Michael Quinn <msquinn@google.com>
+Authors@R:
+    person(given = "Michael",
+           family = "Quinn",
+           role = c("aut", "cre"),
+           email = "msquinn@google.com")
 Description: This is an extension of the 'testthat' package that
     lets you add parameters to your unit tests. Parameterized unit tests
     are often easier to read and more reliable, since they follow the DNRY
