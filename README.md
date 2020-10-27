@@ -85,6 +85,28 @@ with_parameters_test_that("Data is successfully converted:", {
 )
 ```
 
+More complicated testing cases can be constructed using data frames. This is
+usually best handled within a helper function and in a `helper-<test>.R` file.
+
+```
+make_cases <- function() {
+  tibble::tribble(
+    ~ test_name, ~ expr,      ~ numeric_value,
+    "sin",       sin(pi / 4),     1 / sqrt(2),
+    "cos",       cos(pi / 4),     1 / sqrt(2),
+    "tan",       tan(pi / 4),               1
+  )
+}
+
+with_parameters_test_that(
+  "trigonometric functions match identities",
+  {
+    testthat::expect_equal(expr, numeric_value)
+  },
+  .cases = make_cases()
+)
+```
+
 ## Inspiration
 
 This package is inspired by parameterized testing packages in other languages,
