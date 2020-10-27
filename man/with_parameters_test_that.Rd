@@ -5,7 +5,7 @@
 \alias{cases}
 \title{Execute a test with parameters.}
 \usage{
-with_parameters_test_that(desc_stub, code, .cases = NULL, ...)
+with_parameters_test_that(desc_stub, code, ..., .cases = NULL)
 
 cases(...)
 }
@@ -15,9 +15,9 @@ parameterized tests.}
 
 \item{code}{Test code containing expectations.}
 
-\item{.cases}{A data frame where each row contains test parameters.}
-
 \item{...}{Named arguments of test parameters.}
+
+\item{.cases}{A data frame where each row contains test parameters.}
 }
 \description{
 This function is an extension of [testthat::test_that()] that lets you pass

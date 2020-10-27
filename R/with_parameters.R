@@ -32,10 +32,10 @@
 #' with `desc_stub` to create the parameterized test names.
 #'
 #' @param desc_stub A string scalar. Used in creating the names of the
-#'  parameterized tests.
+#'   parameterized tests.
 #' @param code Test code containing expectations.
-#' @param .cases A data frame where each row contains test parameters.
 #' @param ... Named arguments of test parameters.
+#' @param .cases A data frame where each row contains test parameters.
 #' @examples
 #' with_parameters_test_that("trigonometric functions match identities",
 #'   {
@@ -58,7 +58,7 @@
 #'   )
 #' )
 #' @export
-with_parameters_test_that <- function(desc_stub, code, .cases = NULL, ...) {
+with_parameters_test_that <- function(desc_stub, code, ..., .cases = NULL) {
   if (!is.null(.cases)) {
     all_pars <- .cases
   } else {
