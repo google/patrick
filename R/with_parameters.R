@@ -61,10 +61,10 @@
 #' # Or, pass a dataframe of cases, perhaps using a helper function
 #' make_cases <- function() {
 #'   tibble::tribble(
-#'     ~ test_name, ~ expr,      ~ numeric_value,
-#'     "sin",       sin(pi / 4),     1 / sqrt(2),
-#'     "cos",       cos(pi / 4),     1 / sqrt(2),
-#'     "tan",       tan(pi / 4),     1
+#'     ~test_name, ~expr, ~numeric_value,
+#'     "sin", sin(pi / 4), 1 / sqrt(2),
+#'     "cos", cos(pi / 4), 1 / sqrt(2),
+#'     "tan", tan(pi / 4), 1
 #'   )
 #' }
 #'

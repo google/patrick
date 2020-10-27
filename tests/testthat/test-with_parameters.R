@@ -54,8 +54,8 @@ with_parameters_test_that(
     testthat::expect_equal(result, out)
   },
   .cases = tibble::tribble(
-    ~ test_name, ~ FUN,     ~ input,  ~ out,
-    "times",     ~ .x * 2,        2,      4,
-    "plus",      ~ .x + 3,        3,      6
+    ~test_name, ~FUN, ~input, ~out,
+    "times", ~ .x * 2, 2, 4,
+    "plus", ~ .x + 3, 3, 6
   )
 )
