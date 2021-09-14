@@ -38,12 +38,12 @@ Many packages within R employ the following pattern when writing tests:
 ```
 test_that("Data is a successfully converted: numeric", {
   input <- convert(numeric_data)
-  expect_is(input, "numeric")
+  expect_type(input, "double")
 })
 
 test_that("Data is a successfully converted: character", {
   input <- convert(character_data)
-  expect_is(input, "character")
+  expect_type(input, "character")
 })
 ```
 
@@ -54,11 +54,11 @@ yourself). `patrick` eliminates this problem by creating test parameters.
 ```
 with_parameters_test_that("Data is successfully converted:", {
     input <- convert(test_data)
-    expect_is(input, type)
+    expect_type(input, type)
   },
   test_name = c("numeric", "character"),
   test_data = list(numeric_data, character_data),
-  type = c("numeric", "character")
+  type = c("double", "character")
 )
 ```
 
@@ -76,10 +76,10 @@ helper function.
 ```
 with_parameters_test_that("Data is successfully converted:", {
     input <- convert(test_data)
-    expect_is(input, type)
+    expect_type(input, type)
   },
   cases(
-    numeric = list(test_data = numeric_data, type = "numeric"),
+    numeric = list(test_data = numeric_data, type = "double"),
     character = list(test_data = character_data, type = "character")
   )
 )
