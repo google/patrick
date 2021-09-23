@@ -91,7 +91,23 @@ with_parameters_test_that <- function(desc_stub, code, ..., .cases = NULL) {
 build_and_run_test <- function(..., test_name, desc, code, env) {
   completed_desc <- paste(desc, test_name)
   args <- list(..., test_name = test_name)
-  testthat::test_that(completed_desc, rlang::eval_tidy(code, args))
+
+  withCallingHandlers(
+    testthat::test_that(completed_desc, rlang::eval_tidy(code, args)),
+    testthat_braces_warning = function(cnd) {
+      rlang::cnd_muffle(cnd)
+    },
+    # Ensuring backwards compatibility
+    # TODO: remove after new version of testthat releases
+    warning = function(cnd) {
+      if (cnd$message == paste(
+        "The `code` argument to `test_that()` must be a braced expression",
+        "to get accurate file-line information for failures."
+      )) {
+        rlang::cnd_muffle(cnd)
+      }
+    }
+  )
 }
 
 #' @rdname with_parameters_test_that

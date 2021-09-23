@@ -1,3 +1,10 @@
+# patrick 0.0.4
+
+Update `patrick` for testthat 3e.
+
+*  Catch warnings for code not being braced. We still produce the right code.
+*  Make sure patrick uses the right line numbers.
+
 # patrick 0.0.3
 
 *   Add more examples and tests for how patrick works with data frames.

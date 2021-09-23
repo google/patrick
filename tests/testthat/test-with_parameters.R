@@ -12,8 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-context("Parameterized tests")
-
 with_parameters_test_that(
   "Running tests:",
   {
@@ -59,3 +57,61 @@ with_parameters_test_that(
     "plus", ~ .x + 3, 3, 6
   )
 )
+
+with_parameters_test_that("Patrick doesn't throw inappropriate warnings:", {
+    testthat::expect_warning(fun(), regexp = message)
+  },
+  cases(
+    shouldnt_warn = list(fun = function() 1 + 1, message = NA),
+    should_warn = list(
+      fun = function () warning("still warn!"),
+      message = "still warn"
+    )
+  )
+)
+
+test_that("Patrick catches the right class of warning", {
+  # TODO: Find a replacement for testthat's deprecated mock functions.
+  testthat::local_mock(
+     test_that = function(...) {
+       rlang::warn("New warning", class = "testthat_braces_warning")
+     },
+    .env = "testthat"
+  )
+  testthat::expect_warning(
+    with_parameters_test_that(
+      "No more warnings:",
+      {
+        testthat::expect_true(truth)
+      },
+      truth = TRUE
+    ),
+    regexp = NA
+  )
+})
+
+# From testthat/tests/testthat/test-test-that.R
+# Use for checking that line numbers are still correct
+expectation_lines <- function(code) {
+  srcref <- attr(substitute(code), "srcref")
+  if (!is.list(srcref)) {
+    stop("code doesn't have srcref", call. = FALSE)
+  }
+
+  results <- testthat::with_reporter("silent", code)$expectations()
+  unlist(lapply(results, function(x) x$srcref[1])) - srcref[[1]][1]
+}
+
+test_that("patrick reports the correct line numbers", {
+  lines <- expectation_lines({
+                                                 # line 1
+    with_parameters_test_that("simple", {        # line 2
+      expect_true(truth)                         # line 3
+    },                                           # line 4
+    cases(
+      true = list(truth = TRUE),
+      false = list(truth = FALSE)
+    ))
+  })
+  expect_equal(lines, c(3, 3))
+})
