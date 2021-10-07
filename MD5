@@ -1,0 +1,10 @@
+1a637ebb6b823a4c5125a82c5396d41a *DESCRIPTION
+d034d8dbe88f73c8d3f1611d1e9362b3 *NAMESPACE
+ac689dffcb87904185fb194029a5c807 *NEWS.md
+374c72807ac9daa0b8df99f8f8410606 *R/patrick-package.R
+ccd3bc69e06d4c165310beb1cf09284e *R/with_parameters.R
+9673fc7ef28736ed427540aa862e64af *README.md
+e8e0b1907cc6004024260851dda85210 *man/patrick-package.Rd
+8d3df1fe71e69e17e5b245e34d0f1690 *man/with_parameters_test_that.Rd
+7d396051ec7db71be954bcac78dcd191 *tests/testthat.R
+a3cda73bf096cf7a2c50dc1b3536e780 *tests/testthat/test-with_parameters.R

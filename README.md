@@ -56,9 +56,9 @@ with_parameters_test_that("Data is successfully converted:", {
     input <- convert(test_data)
     expect_is(input, type)
   },
-  test_name = c("numeric", "character"),
   test_data = list(numeric_data, character_data),
-  type = c("numeric", "character")
+  type = c("numeric", "character"),
+  .test_name = type
 )
 ```
 
@@ -66,7 +66,7 @@ Parameterized tests behave exactly the same as standard `testthat` tests. Per
 usual, you call all of your tests with `devtools::test`, and they'll also run
 during package checks. Each executes independently and then your test report
 will produce a single report. A complete name for each test will be formed using
-the initial test description and the strings in the `test_name` parameter.
+the initial test description and the strings in the `.test_name` parameter.
 
 Small sets of cases can be reasonably passed as parameters to
 `with_parameters_test_that`. This becomes less readable when the number of cases
@@ -91,7 +91,7 @@ usually best handled within a helper function and in a `helper-<test>.R` file.
 ```
 make_cases <- function() {
   tibble::tribble(
-    ~ test_name, ~ expr,      ~ numeric_value,
+    ~ .test_name, ~ expr,      ~ numeric_value,
     "sin",       sin(pi / 4),     1 / sqrt(2),
     "cos",       cos(pi / 4),     1 / sqrt(2),
     "tan",       tan(pi / 4),               1
