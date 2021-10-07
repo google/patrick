@@ -87,6 +87,20 @@ with_parameters_test_that <- function(desc_stub, code, ..., .cases = NULL) {
     pars <- tibble::tibble(...)
     all_pars <- purrr::possibly(tibble::add_column, pars)(pars, .test_name = "")
   }
+  # TODO: drop this once downstream users upgrade their version of patrick.
+  if ("test_name" %in% names(all_pars)) {
+    msg <- paste(
+      'The argument and cases column "test_name" is deprecated. Please use the',
+      "new `.test_name` argument instead. See `?with_parameters_test_that`",
+      "for more information"
+    )
+    rlang::warn(msg, class = "patrick_test_name_deprecation")
+    all_pars <- dplyr::mutate(
+      all_pars,
+      .test_name = test_name,
+      test_name = NULL
+    )
+  }
   captured <- rlang::enquo(code)
   purrr::pmap(all_pars, build_and_run_test, desc = desc_stub, code = captured)
   invisible(TRUE)

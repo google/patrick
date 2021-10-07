@@ -116,3 +116,31 @@ test_that("patrick reports the correct line numbers", {
   })
   expect_equal(lines, c(3, 3))
 })
+
+test_that('patrick gives a deprecation warning for "test_name"', {
+  testthat::expect_warning(
+    with_parameters_test_that(
+      "Warn about `test_name` argument:",
+      {
+        testthat::expect_true(truth)
+      },
+      truth = TRUE,
+      test_name = "true"
+    ),
+    regexp = "deprecated"
+  )
+
+    testthat::expect_warning(
+    with_parameters_test_that(
+      "Warn about `test_name` column:",
+      {
+        testthat::expect_true(truth)
+      },
+      .cases = tibble::tribble(
+        ~test_name, ~truth,
+        "true", TRUE
+      )
+    ),
+    regexp = "deprecated"
+  )
+})
