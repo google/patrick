@@ -34,15 +34,19 @@
 #' @param desc_stub A string scalar. Used in creating the names of the
 #'   parameterized tests.
 #' @param code Test code containing expectations.
-#' @param ... Named arguments of test parameters.
+#' @param ... Named arguments of test parameters. All vectors should have the
+#'   same length.
 #' @param .cases A data frame where each row contains test parameters.
+#' @param .test_name An alternative way for providing test names. If provided,
+#'   the name will be appended to the stub description in `desc_stub`.
 #' @examples
-#' with_parameters_test_that("trigonometric functions match identities",
+#' with_parameters_test_that("trigonometric functions match identities:",
 #'   {
 #'     testthat::expect_equal(expr, numeric_value)
 #'   },
 #'   expr = c(sin(pi / 4), cos(pi / 4), tan(pi / 4)),
-#'   numeric_value = c(1 / sqrt(2), 1 / sqrt(2), 1)
+#'   numeric_value = c(1 / sqrt(2), 1 / sqrt(2), 1),
+#'   .test_name = c("sin", "cos", "tan")
 #' )
 #'
 #' # Run the same test with the cases() constructor
@@ -61,7 +65,7 @@
 #' # Or, pass a dataframe of cases, perhaps using a helper function
 #' make_cases <- function() {
 #'   tibble::tribble(
-#'     ~test_name, ~expr, ~numeric_value,
+#'     ~.test_name, ~expr, ~numeric_value,
 #'     "sin", sin(pi / 4), 1 / sqrt(2),
 #'     "cos", cos(pi / 4), 1 / sqrt(2),
 #'     "tan", tan(pi / 4), 1
@@ -81,16 +85,16 @@ with_parameters_test_that <- function(desc_stub, code, ..., .cases = NULL) {
     all_pars <- .cases
   } else {
     pars <- tibble::tibble(...)
-    all_pars <- purrr::possibly(tibble::add_column, pars)(pars, test_name = "")
+    all_pars <- purrr::possibly(tibble::add_column, pars)(pars, .test_name = "")
   }
   captured <- rlang::enquo(code)
   purrr::pmap(all_pars, build_and_run_test, desc = desc_stub, code = captured)
   invisible(TRUE)
 }
 
-build_and_run_test <- function(..., test_name, desc, code, env) {
-  completed_desc <- paste(desc, test_name)
-  args <- list(..., test_name = test_name)
+build_and_run_test <- function(..., .test_name, desc, code, env) {
+  completed_desc <- paste(desc, .test_name)
+  args <- list(..., .test_name = .test_name)
 
   withCallingHandlers(
     testthat::test_that(completed_desc, rlang::eval_tidy(code, args)),
@@ -115,5 +119,5 @@ build_and_run_test <- function(..., test_name, desc, code, env) {
 cases <- function(...) {
   all_cases <- list(...)
   nested <- purrr::modify_depth(all_cases, 2, list)
-  dplyr::bind_rows(nested, .id = "test_name")
+  dplyr::bind_rows(nested, .id = ".test_name")
 }

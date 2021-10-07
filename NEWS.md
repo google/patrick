@@ -1,3 +1,12 @@
+# patrick 0.0.5
+
+Breaking changes:
+
+*  Setting test names should now happen with `.test_name`, instead of the
+   implicit `test_name` variable from before. This is now an explicit
+   argument for the function `with_parameters_test_that()`, and the leading dot
+   should help distinguish this from values passed as cases.
+
 # patrick 0.0.4
 
 Update `patrick` for testthat 3e.

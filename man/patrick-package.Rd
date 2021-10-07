@@ -20,12 +20,13 @@ languages, notably the
 Python.
 }
 \examples{
-with_parameters_test_that("trigonometric functions match identities",
+with_parameters_test_that("trigonometric functions match identities:",
   {
     testthat::expect_equal(expr, numeric_value)
   },
   expr = c(sin(pi / 4), cos(pi / 4), tan(pi / 4)),
-  numeric_value = c(1 / sqrt(2), 1 / sqrt(2), 1)
+  numeric_value = c(1 / sqrt(2), 1 / sqrt(2), 1),
+  .test_name = c("sin", "cos", "tan")
 )
 
 # Run the same test with the cases() constructor
@@ -44,10 +45,10 @@ with_parameters_test_that(
 # Or, pass a dataframe of cases, perhaps using a helper function
 make_cases <- function() {
   tibble::tribble(
-    ~ test_name, ~ expr,      ~ numeric_value,
-    "sin",       sin(pi / 4),     1 / sqrt(2),
-    "cos",       cos(pi / 4),     1 / sqrt(2),
-    "tan",       tan(pi / 4),     1
+    ~.test_name, ~expr, ~numeric_value,
+    "sin", sin(pi / 4), 1 / sqrt(2),
+    "cos", cos(pi / 4), 1 / sqrt(2),
+    "tan", tan(pi / 4), 1
   )
 }
 
