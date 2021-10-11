@@ -79,13 +79,19 @@
 #'   },
 #'   .cases = make_cases()
 #' )
+#' @importFrom dplyr .data
 #' @export
-with_parameters_test_that <- function(desc_stub, code, ..., .cases = NULL) {
+with_parameters_test_that <- function(desc_stub,
+                                      code,
+                                      ...,
+                                      .cases = NULL,
+                                      .test_name = "") {
   if (!is.null(.cases)) {
     all_pars <- .cases
   } else {
     pars <- tibble::tibble(...)
-    all_pars <- purrr::possibly(tibble::add_column, pars)(pars, .test_name = "")
+    possibly_add_column <- purrr::possibly(tibble::add_column, otherwise = pars)
+    all_pars <- possibly_add_column(pars, .test_name = .test_name)
   }
   # TODO: drop this once downstream users upgrade their version of patrick.
   if ("test_name" %in% names(all_pars)) {
@@ -95,9 +101,11 @@ with_parameters_test_that <- function(desc_stub, code, ..., .cases = NULL) {
       "for more information"
     )
     rlang::warn(msg, class = "patrick_test_name_deprecation")
+    # It would be nicer to do this with rename(), but that function doesn't
+    # support overwriting existing columns.
     all_pars <- dplyr::mutate(
       all_pars,
-      .test_name = test_name,
+      .test_name = .data$test_name,
       test_name = NULL
     )
   }

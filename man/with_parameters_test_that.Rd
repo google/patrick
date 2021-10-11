@@ -5,7 +5,7 @@
 \alias{cases}
 \title{Execute a test with parameters.}
 \usage{
-with_parameters_test_that(desc_stub, code, ..., .cases = NULL)
+with_parameters_test_that(desc_stub, code, ..., .cases = NULL, .test_name = "")
 
 cases(...)
 }
