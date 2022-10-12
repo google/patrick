@@ -1,4 +1,7 @@
+<!-- badges: start -->
+[![R-CMD-check](https://github.com/google/patrick/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/google/patrick/actions/workflows/R-CMD-check.yaml)
 [![CRAN](https://www.r-pkg.org/badges/version/patrick)](https://cran.r-project.org/package=patrick)
+<!-- badges: end -->
 
 # Introducing patrick
 
