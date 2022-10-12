@@ -26,11 +26,16 @@
 #' is similar to building a `data.frame` rowwise. If you manually build the
 #' data frame, pass it in the `.cases` argument.
 #'
-#' One parameter is noteworthy. If the user passes a character vector as
-#' `.test_name`, each instance is combined with `desc_stub` to create the
-#' completed test name. Similarly, the named argument from `cases()` is combined
-#' with `desc_stub` to create the parameterized test names. When names aren't
-#' provided, they will be automatically generated using the test data.
+#' ## Naming test cases
+#'
+#' If the user passes a character vector as `.test_name`, each instance is
+#' combined with `desc_stub` to create the completed test name. Similarly, the
+#' named argument from `cases()` is combined with `desc_stub` to create the
+#' parameterized test names. When names aren't provided, they will be
+#' automatically generated using the test data.
+#'
+#' Names follow the pattern of "name=value, name=value" for all elements in a
+#' test case.
 #'
 #' @param desc_stub A string scalar. Used in creating the names of the
 #'   parameterized tests.
@@ -63,6 +68,21 @@
 #'     tan = list(expr = tan(pi / 4), numeric_value = 1)
 #'   )
 #' )
+#'
+#' # If names aren't provided, they are automatically generated.
+#' with_parameters_test_that(
+#'   "trigonometric functions match identities",
+#'   {
+#'     testthat::expect_equal(expr, numeric_value)
+#'   },
+#'   cases(
+#'     list(expr = sin(pi / 4), numeric_value = 1 / sqrt(2)),
+#'     list(expr = cos(pi / 4), numeric_value = 1 / sqrt(2)),
+#'     list(expr = tan(pi / 4), numeric_value = 1)
+#'   )
+#' )
+#' # The first test case is named "expr=0.7071068, numeric_value="0.7071068"
+#' # and so on.
 #'
 #' # Or, pass a data frame of cases, perhaps using a helper function
 #' make_cases <- function() {
@@ -127,12 +147,13 @@ with_parameters_test_that <- function(desc_stub,
 #' @noRd
 build_test_names <- function(all_cases) {
   case_names <- names(all_cases)
-  build_label <- function(...) {
-    row <- format(list(...))
-    labels <- sprintf("%s=%s", case_names, row)
-    paste(labels, collapse = ", ")
-  }
-  purrr::pmap_chr(all_cases, build_label)
+  purrr::pmap_chr(all_cases, build_label, case_names = case_names)
+}
+
+build_label <- function(..., case_names) {
+  row <- format(list(...))
+  labels <- sprintf("%s=%s", case_names, row)
+  paste(labels, collapse = "; ")
 }
 
 build_and_run_test <- function(..., .test_name, desc, code, env) {
@@ -162,5 +183,8 @@ build_and_run_test <- function(..., .test_name, desc, code, env) {
 cases <- function(...) {
   all_cases <- list(...)
   nested <- purrr::modify_depth(all_cases, 2, list)
-  dplyr::bind_rows(nested, .id = ".test_name")
+  dplyr::bind_rows(
+    nested,
+    .id = if (!is.null(names(nested))) ".test_name"
+  )
 }

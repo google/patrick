@@ -40,7 +40,7 @@ with_parameters_test_that(
   {
     testthat::expect_identical(
       .test_name,
-      "logical=FALSE, number=1, string=hello"
+      "logical=FALSE; number=1; string=hello"
     )
   },
   .cases = data.frame(
@@ -63,6 +63,14 @@ with_parameters_test_that(
 )
 
 with_parameters_test_that(
+  "Cases are correctly evaluated with names added:",
+  {
+    testthat::expect_identical(.test_name, "vec=1; len=1")
+  },
+  cases(list(vec = 1, len = 1))
+)
+
+with_parameters_test_that(
   "Data frames can be passed to cases:",
   {
     result <- rlang::as_function(FUN)(input)
@@ -81,7 +89,7 @@ with_parameters_test_that("Patrick doesn't throw inappropriate warnings:", {
   cases(
     shouldnt_warn = list(fun = function() 1 + 1, message = NA),
     should_warn = list(
-      fun = function () warning("still warn!"),
+      fun = function() warning("still warn!"),
       message = "still warn"
     )
   )
