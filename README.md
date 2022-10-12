@@ -30,8 +30,6 @@ To use `patrick` as a testing tool within your package, add it to your list of
 ```
 Suggests:
     patrick
-Remotes:
-    google/patrick
 ```
 
 ## Use
