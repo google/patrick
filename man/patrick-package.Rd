@@ -42,6 +42,21 @@ with_parameters_test_that(
   )
 )
 
+# If names aren't provided, they are automatically generated.
+with_parameters_test_that(
+  "trigonometric functions match identities",
+  {
+    testthat::expect_equal(expr, numeric_value)
+  },
+  cases(
+    list(expr = sin(pi / 4), numeric_value = 1 / sqrt(2)),
+    list(expr = cos(pi / 4), numeric_value = 1 / sqrt(2)),
+    list(expr = tan(pi / 4), numeric_value = 1)
+  )
+)
+# The first test case is named "expr=0.7071068, numeric_value="0.7071068"
+# and so on.
+
 # Or, pass a data frame of cases, perhaps using a helper function
 make_cases <- function() {
   tibble::tribble(
