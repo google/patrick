@@ -5,7 +5,13 @@
 \alias{cases}
 \title{Execute a test with parameters.}
 \usage{
-with_parameters_test_that(desc_stub, code, ..., .cases = NULL, .test_name = "")
+with_parameters_test_that(
+  desc_stub,
+  code,
+  ...,
+  .cases = NULL,
+  .test_name = NULL
+)
 
 cases(...)
 }
@@ -21,7 +27,8 @@ same length.}
 \item{.cases}{A data frame where each row contains test parameters.}
 
 \item{.test_name}{An alternative way for providing test names. If provided,
-the name will be appended to the stub description in `desc_stub`.}
+the name will be appended to the stub description in `desc_stub`. If not
+provided, test names will be automatically generated.}
 }
 \description{
 This function is an extension of [testthat::test_that()] that lets you pass
@@ -38,9 +45,10 @@ is similar to building a `data.frame` rowwise. If you manually build the
 data frame, pass it in the `.cases` argument.
 
 One parameter is noteworthy. If the user passes a character vector as
-`test_name`, each instance is combined with `desc_stub` to create the
+`.test_name`, each instance is combined with `desc_stub` to create the
 completed test name. Similarly, the named argument from `cases()` is combined
-with `desc_stub` to create the parameterized test names.
+with `desc_stub` to create the parameterized test names. When names aren't
+provided, they will be automatically generated using the test data.
 }
 \examples{
 with_parameters_test_that("trigonometric functions match identities:",
@@ -65,7 +73,7 @@ with_parameters_test_that(
   )
 )
 
-# Or, pass a dataframe of cases, perhaps using a helper function
+# Or, pass a data frame of cases, perhaps using a helper function
 make_cases <- function() {
   tibble::tribble(
     ~.test_name, ~expr, ~numeric_value,

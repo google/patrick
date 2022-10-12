@@ -42,7 +42,7 @@ with_parameters_test_that(
   )
 )
 
-# Or, pass a dataframe of cases, perhaps using a helper function
+# Or, pass a data frame of cases, perhaps using a helper function
 make_cases <- function() {
   tibble::tribble(
     ~.test_name, ~expr, ~numeric_value,
