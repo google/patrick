@@ -152,8 +152,7 @@ build_test_names <- function(all_cases) {
 
 build_label <- function(..., case_names) {
   row <- format(list(...))
-  labels <- sprintf("%s=%s", case_names, row)
-  paste(labels, collapse = "; ")
+  toString(sprintf("%s=%s", case_names, row))
 }
 
 build_and_run_test <- function(..., .test_name, desc, code, env) {

@@ -40,7 +40,7 @@ with_parameters_test_that(
   {
     testthat::expect_identical(
       .test_name,
-      "logical=FALSE; number=1; string=hello"
+      "logical=FALSE, number=1, string=hello"
     )
   },
   .cases = data.frame(
@@ -65,7 +65,7 @@ with_parameters_test_that(
 with_parameters_test_that(
   "Cases are correctly evaluated with names added:",
   {
-    testthat::expect_identical(.test_name, "vec=1; len=1")
+    testthat::expect_identical(.test_name, "vec=1, len=1")
   },
   cases(list(vec = 1, len = 1))
 )
