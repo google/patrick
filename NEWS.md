@@ -1,3 +1,11 @@
+# patrick 0.2.0
+
+## New features
+
+*  Patrick will try to generate names automatically if not provided. This
+   also works when cases are provided as a data frame.
+
+
 # patrick 0.1.0
 
 Breaking changes:
