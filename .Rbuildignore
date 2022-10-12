@@ -5,3 +5,4 @@ CONTRIBUTING.md
 ^CRAN-RELEASE$
 ^revdep$
 ^\.github$
+.lintr
