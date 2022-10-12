@@ -107,6 +107,9 @@ with_parameters_test_that(
 )
 ```
 
+If you don't provide test names when generating cases, `patrick` will generate
+them automatically from the test data.
+
 ## Inspiration
 
 This package is inspired by parameterized testing packages in other languages,

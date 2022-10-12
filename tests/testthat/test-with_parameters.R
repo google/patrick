@@ -30,9 +30,25 @@ with_parameters_test_that(
 with_parameters_test_that(
   "Names are added",
   {
-    testthat::expect_true(.test_name == "")
+    testthat::expect_identical(.test_name, "case=TRUE")
   },
   case = TRUE
+)
+
+with_parameters_test_that(
+  "Names can be extracted from cases",
+  {
+    testthat::expect_identical(
+      .test_name,
+      "logical=FALSE, number=1, string=hello"
+    )
+  },
+  .cases = data.frame(
+    logical = FALSE,
+    number = 1,
+    string = "hello",
+    stringsAsFactors = FALSE
+  )
 )
 
 with_parameters_test_that(
@@ -44,6 +60,14 @@ with_parameters_test_that(
     one = list(vec = 1, len = 1),
     ten = list(vec = 1:10, len = 10)
   )
+)
+
+with_parameters_test_that(
+  "Cases are correctly evaluated with names added:",
+  {
+    testthat::expect_identical(.test_name, "vec=1, len=1")
+  },
+  cases(list(vec = 1, len = 1))
 )
 
 with_parameters_test_that(
@@ -65,7 +89,7 @@ with_parameters_test_that("Patrick doesn't throw inappropriate warnings:", {
   cases(
     shouldnt_warn = list(fun = function() 1 + 1, message = NA),
     should_warn = list(
-      fun = function () warning("still warn!"),
+      fun = function() warning("still warn!"),
       message = "still warn"
     )
   )

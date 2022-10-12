@@ -26,10 +26,16 @@
 #' is similar to building a `data.frame` rowwise. If you manually build the
 #' data frame, pass it in the `.cases` argument.
 #'
-#' One parameter is noteworthy. If the user passes a character vector as
-#' `test_name`, each instance is combined with `desc_stub` to create the
-#' completed test name. Similarly, the named argument from `cases()` is combined
-#' with `desc_stub` to create the parameterized test names.
+#' ## Naming test cases
+#'
+#' If the user passes a character vector as `.test_name`, each instance is
+#' combined with `desc_stub` to create the completed test name. Similarly, the
+#' named argument from `cases()` is combined with `desc_stub` to create the
+#' parameterized test names. When names aren't provided, they will be
+#' automatically generated using the test data.
+#'
+#' Names follow the pattern of "name=value, name=value" for all elements in a
+#' test case.
 #'
 #' @param desc_stub A string scalar. Used in creating the names of the
 #'   parameterized tests.
@@ -38,7 +44,8 @@
 #'   same length.
 #' @param .cases A data frame where each row contains test parameters.
 #' @param .test_name An alternative way for providing test names. If provided,
-#'   the name will be appended to the stub description in `desc_stub`.
+#'   the name will be appended to the stub description in `desc_stub`. If not
+#'   provided, test names will be automatically generated.
 #' @examples
 #' with_parameters_test_that("trigonometric functions match identities:",
 #'   {
@@ -62,7 +69,22 @@
 #'   )
 #' )
 #'
-#' # Or, pass a dataframe of cases, perhaps using a helper function
+#' # If names aren't provided, they are automatically generated.
+#' with_parameters_test_that(
+#'   "trigonometric functions match identities",
+#'   {
+#'     testthat::expect_equal(expr, numeric_value)
+#'   },
+#'   cases(
+#'     list(expr = sin(pi / 4), numeric_value = 1 / sqrt(2)),
+#'     list(expr = cos(pi / 4), numeric_value = 1 / sqrt(2)),
+#'     list(expr = tan(pi / 4), numeric_value = 1)
+#'   )
+#' )
+#' # The first test case is named "expr=0.7071068, numeric_value="0.7071068"
+#' # and so on.
+#'
+#' # Or, pass a data frame of cases, perhaps using a helper function
 #' make_cases <- function() {
 #'   tibble::tribble(
 #'     ~.test_name, ~expr, ~numeric_value,
@@ -85,13 +107,13 @@ with_parameters_test_that <- function(desc_stub,
                                       code,
                                       ...,
                                       .cases = NULL,
-                                      .test_name = "") {
-  if (!is.null(.cases)) {
-    all_pars <- .cases
-  } else {
+                                      .test_name = NULL) {
+  if (is.null(.cases)) {
     pars <- tibble::tibble(...)
     possibly_add_column <- purrr::possibly(tibble::add_column, otherwise = pars)
     all_pars <- possibly_add_column(pars, .test_name = .test_name)
+  } else {
+    all_pars <- .cases
   }
   # TODO: drop this once downstream users upgrade their version of patrick.
   if ("test_name" %in% names(all_pars)) {
@@ -109,9 +131,28 @@ with_parameters_test_that <- function(desc_stub,
       test_name = NULL
     )
   }
+  if (!".test_name" %in% names(all_pars)) {
+    all_pars$.test_name <- build_test_names(all_pars)
+  }
   captured <- rlang::enquo(code)
   purrr::pmap(all_pars, build_and_run_test, desc = desc_stub, code = captured)
   invisible(TRUE)
+}
+
+#' Generate test names from cases, if none are provided.
+#'
+#' @param all_cases A tibble containing test cases.
+#' @return A character vector, whose length matches the number of rows in
+#'   `all_cases`.
+#' @noRd
+build_test_names <- function(all_cases) {
+  case_names <- names(all_cases)
+  purrr::pmap_chr(all_cases, build_label, case_names = case_names)
+}
+
+build_label <- function(..., case_names) {
+  row <- format(list(...))
+  toString(sprintf("%s=%s", case_names, row))
 }
 
 build_and_run_test <- function(..., .test_name, desc, code, env) {
@@ -141,5 +182,8 @@ build_and_run_test <- function(..., .test_name, desc, code, env) {
 cases <- function(...) {
   all_cases <- list(...)
   nested <- purrr::modify_depth(all_cases, 2, list)
-  dplyr::bind_rows(nested, .id = ".test_name")
+  dplyr::bind_rows(
+    nested,
+    .id = if (!is.null(names(nested))) ".test_name"
+  )
 }
