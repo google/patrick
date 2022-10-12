@@ -181,7 +181,7 @@ build_and_run_test <- function(..., .test_name, desc, code, env) {
 #' @export
 cases <- function(...) {
   all_cases <- list(...)
-  nested <- purrr::modify_depth(all_cases, 2, list)
+  nested <- purrr::modify_depth(all_cases, 2L, list)
   dplyr::bind_rows(
     nested,
     .id = if (!is.null(names(nested))) ".test_name"
