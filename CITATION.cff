@@ -1,0 +1,12 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+abstract: "Patrick extends the 'testthat' package to add parameters to unit tests."
+authors:
+- family-names: "Quinn"
+  given-names: "Michael"
+title: "Patrick"
+
+date-released: 2022-10-13
+license: Apache-2.0
+type: software
+url: "https://github.com/google/patrick"
