@@ -1,4 +1,5 @@
 <!-- badges: start -->
+
 [![R-CMD-check](https://github.com/google/patrick/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/google/patrick/actions/workflows/R-CMD-check.yaml)
 [![CRAN](https://www.r-pkg.org/badges/version/patrick)](https://cran.r-project.org/package=patrick)
 <!-- badges: end -->
@@ -25,7 +26,7 @@ devtools::install_github("google/patrick")
 ```
 
 To use `patrick` as a testing tool within your package, add it to your list of
-`Suggests` and `Remotes` within your package's `DESCRIPTION`.
+`Suggests` within your package's `DESCRIPTION`.
 
 ```
 Suggests:
