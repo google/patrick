@@ -1,7 +1,7 @@
 linters: linters_with_defaults(
     any_duplicated_linter(),
     any_is_na_linter(),
-    consecutive_stopifnot_linter(),
+    consecutive_assertion_linter(),
     expect_comparison_linter(),
     expect_length_linter(),
     expect_named_linter(),
@@ -19,6 +19,6 @@ linters: linters_with_defaults(
     paste_linter(),
     redundant_ifelse_linter(),
     sprintf_linter(),
-    unneeded_concatenation_linter(allow_single_expression = FALSE),
+    unnecessary_concatenation_linter(allow_single_expression = FALSE),
     yoda_test_linter()
   )

@@ -26,5 +26,7 @@
 #' [`parameterized`](https://github.com/wolever/parameterized) library in
 #' Python.
 #' @keywords internal
+#' @importFrom glue glue_data
+#' @importFrom testthat test_that
 #' @inherit with_parameters_test_that examples
 "_PACKAGE"
