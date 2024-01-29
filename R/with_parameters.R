@@ -156,11 +156,22 @@ build_label <- function(..., case_names) {
 }
 
 build_and_run_test <- function(..., .test_name, desc, code, env) {
-  completed_desc <- paste(desc, .test_name)
   args <- list(..., .test_name = .test_name)
+  completed_desc <- glue_data(args, desc)
+  desc_n <- length(completed_desc)
+  if (desc_n != 1L || completed_desc == desc) {
+    completed_desc <- paste(desc, .test_name)
+    if (desc_n != 1L) {
+      rlang::warn(
+        paste("glue_data() on desc= produced output of length", desc_n)
+      )
+    } else {
+      completed_desc <- glue_data(args, completed_desc)
+    }
+  }
 
   withCallingHandlers(
-    testthat::test_that(completed_desc, rlang::eval_tidy(code, args)),
+    test_that(completed_desc, rlang::eval_tidy(code, args)),
     testthat_braces_warning = function(cnd) {
       rlang::cnd_muffle(cnd)
     },

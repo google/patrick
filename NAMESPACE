@@ -3,3 +3,5 @@
 export(cases)
 export(with_parameters_test_that)
 importFrom(dplyr,.data)
+importFrom(glue,glue_data)
+importFrom(testthat,test_that)

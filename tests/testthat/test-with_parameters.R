@@ -83,7 +83,9 @@ with_parameters_test_that(
   )
 )
 
-with_parameters_test_that("Patrick doesn't throw inappropriate warnings:", {
+with_parameters_test_that(
+  "Patrick doesn't throw inappropriate warnings:",
+  {
     testthat::expect_warning(fun(), regexp = message)
   },
   cases(
@@ -96,12 +98,10 @@ with_parameters_test_that("Patrick doesn't throw inappropriate warnings:", {
 )
 
 test_that("Patrick catches the right class of warning", {
-  # TODO: Find a replacement for testthat's deprecated mock functions.
-  testthat::local_mock(
-     test_that = function(...) {
-       rlang::warn("New warning", class = "testthat_braces_warning")
-     },
-    .env = "testthat"
+  testthat::local_mocked_bindings(
+    test_that = function(...) {
+      rlang::warn("New warning", class = "testthat_braces_warning")
+    }
   )
   testthat::expect_warning(
     with_parameters_test_that(
@@ -154,7 +154,7 @@ test_that('patrick gives a deprecation warning for "test_name"', {
     regexp = "deprecated"
   )
 
-    testthat::expect_warning(
+  testthat::expect_warning(
     with_parameters_test_that(
       "Warn about `test_name` column:",
       {
@@ -166,5 +166,55 @@ test_that('patrick gives a deprecation warning for "test_name"', {
       )
     ),
     regexp = "deprecated"
+  )
+})
+
+expectation_names <- function(code) {
+  expectations <- testthat::with_reporter("silent", code)$expectations()
+  vapply(expectations, function(e) as.character(e$test), character(1L))
+}
+
+test_that("glue-formatted descriptions and test names supported", {
+  expect_identical(
+    expectation_names(with_parameters_test_that(
+      "testing for (x, y, z) = ({x}, {y}, {z})",
+      {
+        testthat::expect_true(x + y + z > 0)
+      },
+      x = 1:10, y = 2:11, z = 3:12
+    )),
+    sprintf("testing for (x, y, z) = (%d, %d, %d)", 1:10, 2:11, 3:12)
+  )
+
+  expect_identical(
+    expectation_names(with_parameters_test_that(
+      "testing for (x, y, z):",
+      {
+        testthat::expect_true(x + y + z > 0)
+      },
+      x = 1:10, y = 2:11, z = 3:12,
+      .test_name = "({x}, {y}, {z})"
+    )),
+    sprintf("testing for (x, y, z): (%d, %d, %d)", 1:10, 2:11, 3:12)
+  )
+
+  expect_warning(
+    expect_warning(
+      expect_identical(
+        expectation_names(with_parameters_test_that(
+          "testing for (x, y): ({x}, {y})",
+          {
+            testthat::expect_equal(x, y)
+          },
+          x = list(NULL, 1:10), y = list(NULL, 1:10)
+        )),
+        sprintf(
+          "testing for (x, y): ({x}, {y}) x=%1$s, y=%1$s",
+          c("NULL", toString(1:10))
+        )
+      ),
+      "produced output of length 0"
+    ),
+    "produced output of length 10"
   )
 })
