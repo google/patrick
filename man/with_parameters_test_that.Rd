@@ -10,7 +10,8 @@ with_parameters_test_that(
   code,
   ...,
   .cases = NULL,
-  .test_name = NULL
+  .test_name = NULL,
+  .interpret_glue = TRUE
 )
 
 cases(...)
@@ -29,6 +30,10 @@ same length.}
 \item{.test_name}{An alternative way for providing test names. If provided,
 the name will be appended to the stub description in `desc_stub`. If not
 provided, test names will be automatically generated.}
+
+\item{.interpret_glue}{Logical, default `TRUE`. If `FALSE`, and glue-like
+markup in `desc_stub` is ignored, otherwise [glue::glue_data()] is
+attempted to produce a more complete test description.}
 }
 \description{
 This function is an extension of [testthat::test_that()] that lets you pass

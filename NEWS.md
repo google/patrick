@@ -15,6 +15,8 @@
 
     This also works for supplying such a formatted string as `.test_name`.
 
+    To disable this behavior, use `.interpret_glue = FALSE`.
+
 # patrick 0.2.0
 
 ## New features

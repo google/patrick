@@ -46,6 +46,9 @@
 #' @param .test_name An alternative way for providing test names. If provided,
 #'   the name will be appended to the stub description in `desc_stub`. If not
 #'   provided, test names will be automatically generated.
+#' @param .interpret_glue Logical, default `TRUE`. If `FALSE`, and glue-like
+#'   markup in `desc_stub` is ignored, otherwise [glue::glue_data()] is
+#'   attempted to produce a more complete test description.
 #' @examples
 #' with_parameters_test_that("trigonometric functions match identities:",
 #'   {
@@ -107,7 +110,13 @@ with_parameters_test_that <- function(desc_stub,
                                       code,
                                       ...,
                                       .cases = NULL,
-                                      .test_name = NULL) {
+                                      .test_name = NULL,
+                                      .interpret_glue = TRUE) {
+  stopifnot(
+    is.logical(.interpret_glue),
+    length(.interpret_glue) == 1L,
+    !is.na(.interpret_glue)
+  )
   if (is.null(.cases)) {
     pars <- tibble::tibble(...)
     possibly_add_column <- purrr::possibly(tibble::add_column, otherwise = pars)
@@ -135,7 +144,13 @@ with_parameters_test_that <- function(desc_stub,
     all_pars$.test_name <- build_test_names(all_pars)
   }
   captured <- rlang::enquo(code)
-  purrr::pmap(all_pars, build_and_run_test, desc = desc_stub, code = captured)
+  purrr::pmap(
+    all_pars,
+    build_and_run_test,
+    desc = desc_stub,
+    code = captured,
+    .interpret_glue = .interpret_glue
+  )
   invisible(TRUE)
 }
 
@@ -155,9 +170,21 @@ build_label <- function(..., case_names) {
   toString(sprintf("%s=%s", case_names, row))
 }
 
-build_and_run_test <- function(..., .test_name, desc, code, env) {
+build_and_run_test <- function(..., .test_name, desc, code, env, .interpret_glue) {
   args <- list(..., .test_name = .test_name)
-  completed_desc <- glue_data(args, desc)
+  if (.interpret_glue) {
+    completed_desc <- tryCatch(glue_data(args, desc), error = identity)
+    if (inherits(completed_desc, "error")) {
+      rlang::abort(sprintf(
+        paste(
+          "Attempt to interpret test stub '%s' with glue failed with error:\n%s\n\n",
+          "Set .interpret_glue=FALSE if this test name does not use glue."
+        ),
+        # indent for clarity (the purrr error has similar mark-up)
+        desc, gsub("(^|\n)", "\\1  ", conditionMessage(completed_desc))
+      ))
+    }
+  }
   desc_n <- length(completed_desc)
   if (desc_n != 1L || completed_desc == desc) {
     completed_desc <- paste(desc, .test_name)

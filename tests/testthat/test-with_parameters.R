@@ -217,4 +217,20 @@ test_that("glue-formatted descriptions and test names supported", {
     ),
     "produced output of length 10"
   )
+
+  # but fail kindly for potential accidental use of glue
+  #   c.f. https://github.com/r-lib/lintr/issues/2706
+  expect_error(
+    with_parameters_test_that("a{b}", {
+      expect_true(TRUE)
+    }, .cases = data.frame(d = 1)),
+    "Attempt to interpret test stub 'a{b}' with glue failed",
+    fixed = TRUE
+  )
+  # as well as an escape hatch to work around needing ugly escapes
+  expect_success(
+    with_parameters_test_that("a{b}", {
+      expect_true(TRUE)
+    }, .cases = data.frame(d = 1), .interpret_glue = FALSE)
+  )
 })
