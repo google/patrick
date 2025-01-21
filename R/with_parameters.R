@@ -184,6 +184,8 @@ build_and_run_test <- function(..., .test_name, desc, code, env, .interpret_glue
         desc, gsub("(^|\n)", "\\1  ", conditionMessage(completed_desc))
       ))
     }
+  } else {
+    completed_desc <- desc
   }
   desc_n <- length(completed_desc)
   if (desc_n != 1L || completed_desc == desc) {
