@@ -170,8 +170,7 @@ build_label <- function(..., case_names) {
   toString(sprintf("%s=%s", case_names, row))
 }
 
-build_and_run_test <- function(..., .test_name, desc, code, env, .interpret_glue) {
-  args <- list(..., .test_name = .test_name)
+build_description <- function(args, desc, .test_name, .interpret_glue) {
   if (.interpret_glue) {
     completed_desc <- tryCatch(glue_data(args, desc), error = identity)
     if (inherits(completed_desc, "error")) {
@@ -198,22 +197,16 @@ build_and_run_test <- function(..., .test_name, desc, code, env, .interpret_glue
       completed_desc <- glue_data(args, completed_desc)
     }
   }
+  completed_desc
+}
+
+build_and_run_test <- function(..., .test_name, desc, code, env, .interpret_glue) {
+  args <- list(..., .test_name = .test_name)
+  completed_desc <- build_description(args, desc, .test_name, .interpret_glue)
 
   withCallingHandlers(
     test_that(completed_desc, rlang::eval_tidy(code, args)),
-    testthat_braces_warning = function(cnd) {
-      rlang::cnd_muffle(cnd)
-    },
-    # Ensuring backwards compatibility
-    # TODO: remove after new version of testthat releases
-    warning = function(cnd) {
-      if (cnd$message == paste(
-        "The `code` argument to `test_that()` must be a braced expression",
-        "to get accurate file-line information for failures."
-      )) {
-        rlang::cnd_muffle(cnd)
-      }
-    }
+    testthat_braces_warning = rlang::cnd_muffle
   )
 }
 
