@@ -194,7 +194,7 @@ build_and_run_test <- function(..., .test_name, desc, code, env, .interpret_glue
       rlang::warn(
         paste("glue_data() on desc= produced output of length", desc_n)
       )
-    } else {
+    } else if (.interpret_glue) {
       completed_desc <- glue_data(args, completed_desc)
     }
   }
