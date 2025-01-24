@@ -228,7 +228,7 @@ test_that("glue-formatted descriptions and test names supported", {
     fixed = TRUE
   )
   # as well as an escape hatch to work around needing ugly escapes
-  expect_success(
+  expect_no_error(
     with_parameters_test_that("a{b}", {
       expect_true(TRUE)
     }, .cases = data.frame(d = 1), .interpret_glue = FALSE)
