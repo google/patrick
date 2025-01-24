@@ -24,7 +24,7 @@ Encoding: UTF-8
 RoxygenNote: 7.3.2
 NeedsCompilation: no
 Packaged: 2020-10-27 18:23:21 UTC; msquinn
-Author: Michael Quinn [aut, cre]
+Authors: Michael Quinn [aut, cre], Michael Chirico [ctb]
 Maintainer: Michael Quinn <msquinn@google.com>
 Repository: CRAN
 Date/Publication: 2020-10-27 18:50:03 UTC
