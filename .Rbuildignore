@@ -4,5 +4,6 @@ CONTRIBUTING.md
 ^cran-comments\.md$
 ^CRAN-RELEASE$
 ^revdep$
+^\.devcontainer$
 ^\.github$
 .lintr
