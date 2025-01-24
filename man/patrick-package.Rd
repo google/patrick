@@ -86,5 +86,10 @@ Useful links:
 \author{
 \strong{Maintainer}: Michael Quinn \email{msquinn@google.com}
 
+Other contributors:
+\itemize{
+  \item Michael Chirico \email{chiricom@google.com} [contributor]
+}
+
 }
 \keyword{internal}
