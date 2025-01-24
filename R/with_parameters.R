@@ -46,6 +46,9 @@
 #' @param .test_name An alternative way for providing test names. If provided,
 #'   the name will be appended to the stub description in `desc_stub`. If not
 #'   provided, test names will be automatically generated.
+#' @param .interpret_glue Logical, default `TRUE`. If `FALSE`, and glue-like
+#'   markup in `desc_stub` is ignored, otherwise [glue::glue_data()] is
+#'   attempted to produce a more complete test description.
 #' @examples
 #' with_parameters_test_that("trigonometric functions match identities:",
 #'   {
@@ -107,7 +110,13 @@ with_parameters_test_that <- function(desc_stub,
                                       code,
                                       ...,
                                       .cases = NULL,
-                                      .test_name = NULL) {
+                                      .test_name = NULL,
+                                      .interpret_glue = TRUE) {
+  stopifnot(
+    is.logical(.interpret_glue),
+    length(.interpret_glue) == 1L,
+    !is.na(.interpret_glue)
+  )
   if (is.null(.cases)) {
     pars <- tibble::tibble(...)
     possibly_add_column <- purrr::possibly(tibble::add_column, otherwise = pars)
@@ -135,7 +144,13 @@ with_parameters_test_that <- function(desc_stub,
     all_pars$.test_name <- build_test_names(all_pars)
   }
   captured <- rlang::enquo(code)
-  purrr::pmap(all_pars, build_and_run_test, desc = desc_stub, code = captured)
+  purrr::pmap(
+    all_pars,
+    build_and_run_test,
+    desc = desc_stub,
+    code = captured,
+    .interpret_glue = .interpret_glue
+  )
   invisible(TRUE)
 }
 
@@ -155,9 +170,22 @@ build_label <- function(..., case_names) {
   toString(sprintf("%s=%s", case_names, row))
 }
 
-build_and_run_test <- function(..., .test_name, desc, code, env) {
-  args <- list(..., .test_name = .test_name)
-  completed_desc <- glue_data(args, desc)
+build_description <- function(args, desc, .test_name, .interpret_glue) {
+  if (.interpret_glue) {
+    completed_desc <- tryCatch(glue_data(args, desc), error = identity)
+    if (inherits(completed_desc, "error")) {
+      rlang::abort(sprintf(
+        paste(
+          "Attempt to interpret test stub '%s' with glue failed with error:\n%s\n\n",
+          "Set .interpret_glue=FALSE if this test name does not use glue."
+        ),
+        # indent for clarity (the purrr error has similar mark-up)
+        desc, gsub("(^|\n)", "\\1  ", conditionMessage(completed_desc))
+      ))
+    }
+  } else {
+    completed_desc <- desc
+  }
   desc_n <- length(completed_desc)
   if (desc_n != 1L || completed_desc == desc) {
     completed_desc <- paste(desc, .test_name)
@@ -165,26 +193,20 @@ build_and_run_test <- function(..., .test_name, desc, code, env) {
       rlang::warn(
         paste("glue_data() on desc= produced output of length", desc_n)
       )
-    } else {
+    } else if (.interpret_glue) {
       completed_desc <- glue_data(args, completed_desc)
     }
   }
+  completed_desc
+}
+
+build_and_run_test <- function(..., .test_name, desc, code, env, .interpret_glue) {
+  args <- list(..., .test_name = .test_name)
+  completed_desc <- build_description(args, desc, .test_name, .interpret_glue)
 
   withCallingHandlers(
     test_that(completed_desc, rlang::eval_tidy(code, args)),
-    testthat_braces_warning = function(cnd) {
-      rlang::cnd_muffle(cnd)
-    },
-    # Ensuring backwards compatibility
-    # TODO: remove after new version of testthat releases
-    warning = function(cnd) {
-      if (cnd$message == paste(
-        "The `code` argument to `test_that()` must be a braced expression",
-        "to get accurate file-line information for failures."
-      )) {
-        rlang::cnd_muffle(cnd)
-      }
-    }
+    testthat_braces_warning = rlang::cnd_muffle
   )
 }
 
