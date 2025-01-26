@@ -1,4 +1,5 @@
 LICENSE
+CITATION.cff
 CODE_OF_CONDUCT.md
 CONTRIBUTING.md
 ^cran-comments\.md$
