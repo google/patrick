@@ -26,7 +26,11 @@
 #' [`parameterized`](https://github.com/wolever/parameterized) library in
 #' Python.
 #' @keywords internal
+#' @importFrom dplyr bind_rows mutate
 #' @importFrom glue glue_data
+#' @importFrom purrr modify_depth pmap pmap_chr possibly
+#' @importFrom rlang abort cnd_muffle enquo eval_tidy warn
 #' @importFrom testthat test_that
+#' @importFrom tibble add_column tibble
 #' @inherit with_parameters_test_that examples
 "_PACKAGE"
