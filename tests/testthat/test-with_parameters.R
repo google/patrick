@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-with_parameters_test_that(
+test_these(
   "Running tests:",
   {
     if (test_outcome == "success") {
@@ -27,7 +27,7 @@ with_parameters_test_that(
   .test_name = c("success", "fail", "null")
 )
 
-with_parameters_test_that(
+test_these(
   "Names are added",
   {
     testthat::expect_identical(.test_name, "case=TRUE")
@@ -35,7 +35,7 @@ with_parameters_test_that(
   case = TRUE
 )
 
-with_parameters_test_that(
+test_these(
   "Names can be extracted from cases",
   {
     testthat::expect_identical(
@@ -51,7 +51,7 @@ with_parameters_test_that(
   )
 )
 
-with_parameters_test_that(
+test_these(
   "Cases are correctly evaluated:",
   {
     testthat::expect_length(vec, len)
@@ -62,7 +62,7 @@ with_parameters_test_that(
   )
 )
 
-with_parameters_test_that(
+test_these(
   "Cases are correctly evaluated with names added:",
   {
     testthat::expect_identical(.test_name, "vec=1, len=1")
@@ -70,7 +70,7 @@ with_parameters_test_that(
   cases(list(vec = 1, len = 1))
 )
 
-with_parameters_test_that(
+test_these(
   "Data frames can be passed to cases:",
   {
     result <- rlang::as_function(FUN)(input)
@@ -83,7 +83,7 @@ with_parameters_test_that(
   )
 )
 
-with_parameters_test_that(
+test_these(
   "Patrick doesn't throw inappropriate warnings:",
   {
     testthat::expect_warning(fun(), regexp = message)
@@ -104,7 +104,7 @@ test_that("Patrick catches the right class of warning", {
     }
   )
   testthat::expect_warning(
-    with_parameters_test_that(
+    test_these(
       "No more warnings:",
       {
         testthat::expect_true(truth)
@@ -130,7 +130,7 @@ expectation_lines <- function(code) {
 test_that("patrick reports the correct line numbers", {
   lines <- expectation_lines({
                                                  # line 1
-    with_parameters_test_that("simple", {        # line 2
+    test_these("simple", {        # line 2
       expect_true(truth)                         # line 3
     },                                           # line 4
     cases(
@@ -143,7 +143,7 @@ test_that("patrick reports the correct line numbers", {
 
 test_that('patrick gives a deprecation warning for "test_name"', {
   testthat::expect_warning(
-    with_parameters_test_that(
+    test_these(
       "Warn about `test_name` argument:",
       {
         testthat::expect_true(truth)
@@ -155,7 +155,7 @@ test_that('patrick gives a deprecation warning for "test_name"', {
   )
 
   testthat::expect_warning(
-    with_parameters_test_that(
+    test_these(
       "Warn about `test_name` column:",
       {
         testthat::expect_true(truth)
@@ -176,7 +176,7 @@ expectation_names <- function(code) {
 
 test_that("glue-formatted descriptions and test names supported", {
   expect_identical(
-    expectation_names(with_parameters_test_that(
+    expectation_names(test_these(
       "testing for (x, y, z) = ({x}, {y}, {z})",
       {
         testthat::expect_true(x + y + z > 0)
@@ -187,7 +187,7 @@ test_that("glue-formatted descriptions and test names supported", {
   )
 
   expect_identical(
-    expectation_names(with_parameters_test_that(
+    expectation_names(test_these(
       "testing for (x, y, z):",
       {
         testthat::expect_true(x + y + z > 0)
@@ -201,7 +201,7 @@ test_that("glue-formatted descriptions and test names supported", {
   expect_warning(
     expect_warning(
       expect_identical(
-        expectation_names(with_parameters_test_that(
+        expectation_names(test_these(
           "testing for (x, y): ({x}, {y})",
           {
             testthat::expect_equal(x, y)
@@ -221,7 +221,7 @@ test_that("glue-formatted descriptions and test names supported", {
   # but fail kindly for potential accidental use of glue
   #   c.f. https://github.com/r-lib/lintr/issues/2706
   expect_error(
-    with_parameters_test_that("a{b}", {
+    test_these("a{b}", {
       expect_true(TRUE)
     }, .cases = data.frame(d = 1)),
     "Attempt to interpret test stub 'a{b}' with glue failed",
@@ -229,8 +229,16 @@ test_that("glue-formatted descriptions and test names supported", {
   )
   # as well as an escape hatch to work around needing ugly escapes
   expect_no_error(
-    with_parameters_test_that("a{b}", {
+    test_these("a{b}", {
       expect_true(TRUE)
     }, .cases = data.frame(d = 1), .interpret_glue = FALSE)
+  )
+})
+
+test_that("with_parameters_test_that is deprecated", {
+  expect_warning(
+    with_parameters_test_that("I'm deprecated", {
+      expect_true(TRUE)
+    })
   )
 })
