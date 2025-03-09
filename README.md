@@ -54,7 +54,7 @@ other issues, as it is a violation of the classic DNRY rule (do not repeat
 yourself). `patrick` eliminates this problem by creating test parameters.
 
 ```
-with_parameters_test_that("Data is successfully converted:", {
+test_these("Data is successfully converted:", {
     input <- convert(test_data)
     expect_type(input, type)
   },
@@ -71,12 +71,12 @@ will produce a single report. A complete name for each test will be formed using
 the initial test description and the strings in the `.test_name` parameter.
 
 Small sets of cases can be reasonably passed as parameters to
-`with_parameters_test_that`. This becomes less readable when the number of cases
+`test_these`. This becomes less readable when the number of cases
 increases. To help mitigate this issue, `patrick` provides a case generator
 helper function.
 
 ```
-with_parameters_test_that("Data is successfully converted:", {
+test_these("Data is successfully converted:", {
     input <- convert(test_data)
     expect_type(input, type)
   },
@@ -100,7 +100,7 @@ make_cases <- function() {
   )
 }
 
-with_parameters_test_that(
+test_these(
   "trigonometric functions match identities",
   {
     testthat::expect_equal(expr, numeric_value)
