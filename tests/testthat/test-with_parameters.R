@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-with_parameters_test_that(
+test_these(
   "Running tests:",
   {
     if (test_outcome == "success") {
@@ -27,7 +27,7 @@ with_parameters_test_that(
   .test_name = c("success", "fail", "null")
 )
 
-with_parameters_test_that(
+test_these(
   "Names are added",
   {
     testthat::expect_identical(.test_name, "case=TRUE")
@@ -35,7 +35,7 @@ with_parameters_test_that(
   case = TRUE
 )
 
-with_parameters_test_that(
+test_these(
   "Names can be extracted from cases",
   {
     testthat::expect_identical(
@@ -45,32 +45,32 @@ with_parameters_test_that(
   },
   .cases = data.frame(
     logical = FALSE,
-    number = 1,
+    number = 1L,
     string = "hello",
     stringsAsFactors = FALSE
   )
 )
 
-with_parameters_test_that(
+test_these(
   "Cases are correctly evaluated:",
   {
     testthat::expect_length(vec, len)
   },
   cases(
-    one = list(vec = 1, len = 1),
-    ten = list(vec = 1:10, len = 10)
+    one = list(vec = 1L, len = 1L),
+    ten = list(vec = 1L:10L, len = 10L)
   )
 )
 
-with_parameters_test_that(
+test_these(
   "Cases are correctly evaluated with names added:",
   {
     testthat::expect_identical(.test_name, "vec=1, len=1")
   },
-  cases(list(vec = 1, len = 1))
+  cases(list(vec = 1L, len = 1L))
 )
 
-with_parameters_test_that(
+test_these(
   "Data frames can be passed to cases:",
   {
     result <- rlang::as_function(FUN)(input)
@@ -78,18 +78,18 @@ with_parameters_test_that(
   },
   .cases = tibble::tribble(
     ~.test_name, ~FUN, ~input, ~out,
-    "times", ~ .x * 2, 2, 4,
-    "plus", ~ .x + 3, 3, 6
+    "times", ~ .x * 2L, 2L, 4L,
+    "plus", ~ .x + 3L, 3L, 6L
   )
 )
 
-with_parameters_test_that(
+test_these(
   "Patrick doesn't throw inappropriate warnings:",
   {
     testthat::expect_warning(fun(), regexp = message)
   },
   cases(
-    shouldnt_warn = list(fun = function() 1 + 1, message = NA),
+    shouldnt_warn = list(fun = function() 1L + 1L, message = NA),
     should_warn = list(
       fun = function() warning("still warn!"),
       message = "still warn"
@@ -104,7 +104,7 @@ test_that("Patrick catches the right class of warning", {
     }
   )
   testthat::expect_warning(
-    with_parameters_test_that(
+    test_these(
       "No more warnings:",
       {
         testthat::expect_true(truth)
@@ -124,26 +124,26 @@ expectation_lines <- function(code) {
   }
 
   results <- testthat::with_reporter("silent", code)$expectations()
-  unlist(lapply(results, function(x) x$srcref[1])) - srcref[[1]][1]
+  unlist(lapply(results, function(x) x$srcref[1L])) - srcref[[1L]][1L]
 }
 
 test_that("patrick reports the correct line numbers", {
   lines <- expectation_lines({
-                                                 # line 1
-    with_parameters_test_that("simple", {        # line 2
-      expect_true(truth)                         # line 3
-    },                                           # line 4
+                              # line 1
+    test_these("simple", {    # line 2
+      expect_true(truth)      # line 3
+    },                        # line 4
     cases(
       true = list(truth = TRUE),
       false = list(truth = FALSE)
     ))
   })
-  expect_equal(lines, c(3, 3))
+  expect_equal(lines, c(3L, 3L))
 })
 
 test_that('patrick gives a deprecation warning for "test_name"', {
   testthat::expect_warning(
-    with_parameters_test_that(
+    test_these(
       "Warn about `test_name` argument:",
       {
         testthat::expect_true(truth)
@@ -155,7 +155,7 @@ test_that('patrick gives a deprecation warning for "test_name"', {
   )
 
   testthat::expect_warning(
-    with_parameters_test_that(
+    test_these(
       "Warn about `test_name` column:",
       {
         testthat::expect_true(truth)
@@ -176,41 +176,41 @@ expectation_names <- function(code) {
 
 test_that("glue-formatted descriptions and test names supported", {
   expect_identical(
-    expectation_names(with_parameters_test_that(
+    expectation_names(test_these(
       "testing for (x, y, z) = ({x}, {y}, {z})",
       {
-        testthat::expect_true(x + y + z > 0)
+        testthat::expect_gt(x + y + z, 0L)
       },
-      x = 1:10, y = 2:11, z = 3:12
+      x = 1L:10L, y = 2L:11L, z = 3L:12L
     )),
-    sprintf("testing for (x, y, z) = (%d, %d, %d)", 1:10, 2:11, 3:12)
+    sprintf("testing for (x, y, z) = (%d, %d, %d)", 1L:10L, 2L:11L, 3L:12L)
   )
 
   expect_identical(
-    expectation_names(with_parameters_test_that(
+    expectation_names(test_these(
       "testing for (x, y, z):",
       {
-        testthat::expect_true(x + y + z > 0)
+        testthat::expect_gt(x + y + z, 0L)
       },
-      x = 1:10, y = 2:11, z = 3:12,
+      x = 1L:10L, y = 2L:11L, z = 3L:12L,
       .test_name = "({x}, {y}, {z})"
     )),
-    sprintf("testing for (x, y, z): (%d, %d, %d)", 1:10, 2:11, 3:12)
+    sprintf("testing for (x, y, z): (%d, %d, %d)", 1L:10L, 2L:11L, 3L:12L)
   )
 
   expect_warning(
     expect_warning(
       expect_identical(
-        expectation_names(with_parameters_test_that(
+        expectation_names(test_these(
           "testing for (x, y): ({x}, {y})",
           {
             testthat::expect_equal(x, y)
           },
-          x = list(NULL, 1:10), y = list(NULL, 1:10)
+          x = list(NULL, 1L:10L), y = list(NULL, 1L:10L)
         )),
         sprintf(
           "testing for (x, y): ({x}, {y}) x=%1$s, y=%1$s",
-          c("NULL", toString(1:10))
+          c("NULL", toString(1L:10L))
         )
       ),
       "produced output of length 0"
@@ -221,16 +221,24 @@ test_that("glue-formatted descriptions and test names supported", {
   # but fail kindly for potential accidental use of glue
   #   c.f. https://github.com/r-lib/lintr/issues/2706
   expect_error(
-    with_parameters_test_that("a{b}", {
+    test_these("a{b}", {
       expect_true(TRUE)
-    }, .cases = data.frame(d = 1)),
+    }, .cases = data.frame(d = 1L)),
     "Attempt to interpret test stub 'a{b}' with glue failed",
     fixed = TRUE
   )
   # as well as an escape hatch to work around needing ugly escapes
   expect_no_error(
-    with_parameters_test_that("a{b}", {
+    test_these("a{b}", {
       expect_true(TRUE)
-    }, .cases = data.frame(d = 1), .interpret_glue = FALSE)
+    }, .cases = data.frame(d = 1L), .interpret_glue = FALSE)
+  )
+})
+
+test_that("with_parameters_test_that is deprecated", {
+  expect_warning(
+    with_parameters_test_that("I'm deprecated", {
+      expect_true(TRUE)
+    })
   )
 })
