@@ -176,8 +176,9 @@ build_description <- function(args, desc, .test_name, .interpret_glue) {
     if (inherits(completed_desc, "error")) {
       abort(sprintf(
         paste(
-          "Attempt to interpret test stub '%s' with glue failed with error:\n%s\n\n",
-          "Set .interpret_glue=FALSE if this test name does not use glue."
+          "Attempt to interpret test stub '%s' with glue failed with ",
+          "error:\n%s\n\nSet .interpret_glue=FALSE if this test name does not",
+          "use glue."
         ),
         # indent for clarity (the purrr error has similar mark-up)
         desc, gsub("(^|\n)", "\\1  ", conditionMessage(completed_desc))
@@ -200,7 +201,8 @@ build_description <- function(args, desc, .test_name, .interpret_glue) {
   completed_desc
 }
 
-build_and_run_test <- function(..., .test_name, desc, code, env, .interpret_glue) {
+build_and_run_test <- function(..., .test_name, desc, code, env,
+                               .interpret_glue) {
   args <- list(..., .test_name = .test_name)
   completed_desc <- build_description(args, desc, .test_name, .interpret_glue)
 
