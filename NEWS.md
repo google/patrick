@@ -1,4 +1,4 @@
-# patrick (development version)
+# patrick (0.3.1)
 
 *  @chiricom is now the maintainer of {patrick}. Thanks @michaelquinn32
    for 7 years at the help as package creator and maintainer!
