@@ -2,6 +2,7 @@
 
 *  @chiricom is now the maintainer of {patrick}. Thanks @michaelquinn32
    for 7 years at the help as package creator and maintainer!
+*  Minor fix in the test suite to adapt to {testthat} 3.3.0. Thanks @hadley!
 
 # patrick (0.3.0)
 
