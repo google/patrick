@@ -1,1 +1,4 @@
 tests/testthat/testthat-problems.rds
+
+*.Rcheck
+*.tar.gz
