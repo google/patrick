@@ -211,7 +211,6 @@ test_that("glue-formatted descriptions and test names supported", {
     )) |>
     expect_warning("produced output of length 0")
     expect_warning("produced output of length 10")
-  )
 
   # but fail kindly for potential accidental use of glue
   #   c.f. https://github.com/r-lib/lintr/issues/2706
