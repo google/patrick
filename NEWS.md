@@ -1,5 +1,8 @@
 # patrick (development version)
 
+*  @chiricom is now the maintainer of {patrick}. Thanks @michaelquinn32
+   for 7 years at the help as package creator and maintainer!
+
 # patrick (0.3.0)
 
 *  Patrick can build test names as {glue}-formatted strings, e.g.
