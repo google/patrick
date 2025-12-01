@@ -124,7 +124,7 @@ with_parameters_test_that <- function(desc_stub,
   } else {
     all_pars <- .cases
   }
-  # TODO: drop this once downstream users upgrade their version of patrick.
+  # TODO(#33): deprecate & remove this branch
   if ("test_name" %in% names(all_pars)) {
     msg <- paste(
       'The argument and cases column "test_name" is deprecated. Please use the',
@@ -166,8 +166,8 @@ build_test_names <- function(all_cases) {
 }
 
 build_label <- function(..., case_names) {
-  row <- format(list(...))
-  toString(sprintf("%s=%s", case_names, row))
+  case_row <- format(list(...))
+  toString(sprintf("%s=%s", case_names, case_row))
 }
 
 build_description <- function(args, desc, .test_name, .interpret_glue) {
@@ -176,8 +176,10 @@ build_description <- function(args, desc, .test_name, .interpret_glue) {
     if (inherits(completed_desc, "error")) {
       abort(sprintf(
         paste(
-          "Attempt to interpret test stub '%s' with glue failed with error:\n%s\n\n",
-          "Set .interpret_glue=FALSE if this test name does not use glue."
+          "Attempt to interpret test stub '%s' with glue failed with error:",
+          "%s", "",
+          "Set .interpret_glue=FALSE if this test name does not use glue.",
+          sep = "\n"
         ),
         # indent for clarity (the purrr error has similar mark-up)
         desc, gsub("(^|\n)", "\\1  ", conditionMessage(completed_desc))
@@ -200,12 +202,15 @@ build_description <- function(args, desc, .test_name, .interpret_glue) {
   completed_desc
 }
 
-build_and_run_test <- function(..., .test_name, desc, code, env, .interpret_glue) {
-  args <- list(..., .test_name = .test_name)
-  completed_desc <- build_description(args, desc, .test_name, .interpret_glue)
+build_and_run_test <- function(
+  ..., .test_name, desc, code, env, .interpret_glue
+) {
+  test_args <- list(..., .test_name = .test_name)
+  completed_desc <-
+    build_description(test_args, desc, .test_name, .interpret_glue)
 
   withCallingHandlers(
-    test_that(completed_desc, eval_tidy(code, args)),
+    test_that(completed_desc, eval_tidy(code, test_args)),
     testthat_braces_warning = cnd_muffle
   )
 }
