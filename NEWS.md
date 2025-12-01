@@ -1,5 +1,8 @@
 # patrick (development version)
 
+*  We're switching the default API to a terser option: `test_these()`. (#22)
+   Thanks for the suggestion @hadley!
+
 # patrick (0.3.0)
 
 *  Patrick can build test names as {glue}-formatted strings, e.g.
