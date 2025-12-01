@@ -4,11 +4,11 @@ Version: 0.3.0.9000
 Authors@R: c(
     person(given = "Michael",
            family = "Quinn",
-           role = c("aut", "cre"),
+           role = "aut",
            email = "michael.quinn@aya.yale.edu"),
     person(given = "Michael",
            family = "Chirico",
-           role = "ctb",
+           role = c("aut", "cre"),
            email = "chiricom@google.com"))
 Description: This is an extension of the 'testthat' package that
     lets you add parameters to your unit tests. Parameterized unit tests
