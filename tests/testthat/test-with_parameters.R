@@ -111,7 +111,7 @@ test_that("Patrick catches the right class of warning", {
     },
     truth = TRUE
   ) |>
-    testthat::expect_warning(regexp = NA)
+    testthat::expect_no_warning()
 })
 
 # From testthat/tests/testthat/test-test-that.R
