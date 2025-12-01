@@ -45,7 +45,7 @@ with_parameters_test_that(
   },
   .cases = data.frame(
     logical = FALSE,
-    number = 1,
+    number = 1.0,
     string = "hello",
     stringsAsFactors = FALSE
   )
@@ -57,8 +57,8 @@ with_parameters_test_that(
     testthat::expect_length(vec, len)
   },
   cases(
-    one = list(vec = 1, len = 1),
-    ten = list(vec = 1:10, len = 10)
+    one = list(vec = 1L, len = 1L),
+    ten = list(vec = 1:10, len = 10L)
   )
 )
 
@@ -67,19 +67,19 @@ with_parameters_test_that(
   {
     testthat::expect_identical(.test_name, "vec=1, len=1")
   },
-  cases(list(vec = 1, len = 1))
+  cases(list(vec = 1L, len = 1L))
 )
 
 with_parameters_test_that(
   "Data frames can be passed to cases:",
   {
     result <- rlang::as_function(FUN)(input)
-    testthat::expect_equal(result, out)
+    testthat::expect_identical(result, out)
   },
   .cases = tibble::tribble(
     ~.test_name, ~FUN, ~input, ~out,
-    "times", ~ .x * 2, 2, 4,
-    "plus", ~ .x + 3, 3, 6
+    "times", ~ .x * 2L, 2L, 4L,
+    "plus", ~ .x + 3L, 3L, 6L
   )
 )
 
@@ -89,9 +89,9 @@ with_parameters_test_that(
     testthat::expect_warning(fun(), regexp = message)
   },
   cases(
-    shouldnt_warn = list(fun = function() 1 + 1, message = NA),
+    shouldnt_warn = list(fun = function() 1L + 1L, message = NA),
     should_warn = list(
-      fun = function() warning("still warn!"),
+      fun = function() warning("still warn!", call. = FALSE),
       message = "still warn"
     )
   )
@@ -118,16 +118,17 @@ test_that("Patrick catches the right class of warning", {
 # From testthat/tests/testthat/test-test-that.R
 # Use for checking that line numbers are still correct
 expectation_lines <- function(code) {
-  srcref <- attr(substitute(code), "srcref")
-  if (!is.list(srcref)) {
+  code_srcref <- attr(substitute(code), "srcref")
+  if (!is.list(code_srcref)) {
     stop("code doesn't have srcref", call. = FALSE)
   }
 
   results <- testthat::with_reporter("silent", code)$expectations()
-  unlist(lapply(results, function(x) x$srcref[1])) - srcref[[1]][1]
+  unlist(lapply(results, function(x) x$srcref[1L])) - code_srcref[[1L]][1L]
 }
 
 test_that("patrick reports the correct line numbers", {
+  # nolint start: indentation_linter.
   lines <- expectation_lines({
                                                  # line 1
     with_parameters_test_that("simple", {        # line 2
@@ -138,7 +139,8 @@ test_that("patrick reports the correct line numbers", {
       false = list(truth = FALSE)
     ))
   })
-  expect_equal(lines, c(3, 3))
+  # nolint end: indentation_linter.
+  expect_identical(lines, c(3L, 3L))
 })
 
 test_that('patrick gives a deprecation warning for "test_name"', {
@@ -179,7 +181,7 @@ test_that("glue-formatted descriptions and test names supported", {
     expectation_names(with_parameters_test_that(
       "testing for (x, y, z) = ({x}, {y}, {z})",
       {
-        testthat::expect_true(x + y + z > 0)
+        testthat::expect_gt(x + y + z, 0L)
       },
       x = 1:10, y = 2:11, z = 3:12
     )),
@@ -190,7 +192,7 @@ test_that("glue-formatted descriptions and test names supported", {
     expectation_names(with_parameters_test_that(
       "testing for (x, y, z):",
       {
-        testthat::expect_true(x + y + z > 0)
+        testthat::expect_gt(x + y + z, 0L)
       },
       x = 1:10, y = 2:11, z = 3:12,
       .test_name = "({x}, {y}, {z})"
@@ -204,7 +206,7 @@ test_that("glue-formatted descriptions and test names supported", {
         expectation_names(with_parameters_test_that(
           "testing for (x, y): ({x}, {y})",
           {
-            testthat::expect_equal(x, y)
+            testthat::expect_identical(x, y)
           },
           x = list(NULL, 1:10), y = list(NULL, 1:10)
         )),
@@ -223,7 +225,7 @@ test_that("glue-formatted descriptions and test names supported", {
   expect_error(
     with_parameters_test_that("a{b}", {
       expect_true(TRUE)
-    }, .cases = data.frame(d = 1)),
+    }, .cases = data.frame(d = 1L)),
     "Attempt to interpret test stub 'a{b}' with glue failed",
     fixed = TRUE
   )
@@ -231,6 +233,6 @@ test_that("glue-formatted descriptions and test names supported", {
   expect_no_error(
     with_parameters_test_that("a{b}", {
       expect_true(TRUE)
-    }, .cases = data.frame(d = 1), .interpret_glue = FALSE)
+    }, .cases = data.frame(d = 1L), .interpret_glue = FALSE)
   )
 })

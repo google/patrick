@@ -1,24 +1,11 @@
-linters: linters_with_defaults(
-    any_duplicated_linter(),
-    any_is_na_linter(),
-    consecutive_assertion_linter(),
-    expect_comparison_linter(),
-    expect_length_linter(),
-    expect_named_linter(),
-    expect_not_linter(),
-    expect_null_linter(),
-    expect_s3_class_linter(),
-    expect_s4_class_linter(),
-    expect_true_false_linter(),
-    expect_type_linter(),
-    implicit_integer_linter(),
-    line_length_linter(80),
-    missing_argument_linter(),
-    nested_ifelse_linter(),
-    numeric_leading_zero_linter(),
-    paste_linter(),
-    redundant_ifelse_linter(),
-    sprintf_linter(),
-    unnecessary_concatenation_linter(allow_single_expression = FALSE),
-    yoda_test_linter()
+linters: all_linters(
+    implicit_integer_linter = implicit_integer_linter(allow_colon=TRUE),
+    todo_comment_linter(except_regex = rex::rex("TODO(#", one_or_more(digit), ")")),
+    cyclocomp_linter = NULL
+  )
+exclusions: list(
+    "tests/testthat.R" = list(
+      undesirable_function_linter = Inf,
+      unused_import_linter = Inf
+    )
   )
