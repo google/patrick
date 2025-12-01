@@ -18,7 +18,7 @@ with_parameters_test_that(
     if (test_outcome == "success") {
       testthat::expect_success(testthat::expect_true(case))
     } else {
-      failure_message <- "`case` (isn't true|is not TRUE)"
+      failure_message <- "`case` (isn't true|is not TRUE|to be TRUE)"
       testthat::expect_failure(testthat::expect_true(case), failure_message)
     }
   },
