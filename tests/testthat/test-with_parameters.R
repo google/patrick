@@ -89,9 +89,9 @@ with_parameters_test_that(
     testthat::expect_warning(fun(), regexp = message)
   },
   cases(
-    shouldnt_warn = list(fun = function() 1L + 1L, message = NA),
+    shouldnt_warn = list(fun = \() 1L + 1L, message = NA),
     should_warn = list(
-      fun = function() warning("still warn!", call. = FALSE),
+      fun = \() warning("still warn!", call. = FALSE),
       message = "still warn"
     )
   )
@@ -103,16 +103,15 @@ test_that("Patrick catches the right class of warning", {
       rlang::warn("New warning", class = "testthat_braces_warning")
     }
   )
-  testthat::expect_warning(
-    with_parameters_test_that(
-      "No more warnings:",
-      {
-        testthat::expect_true(truth)
-      },
-      truth = TRUE
-    ),
-    regexp = NA
-  )
+
+  with_parameters_test_that(
+    "No more warnings:",
+    {
+      testthat::expect_true(truth)
+    },
+    truth = TRUE
+  ) |>
+    testthat::expect_warning(regexp = NA)
 })
 
 # From testthat/tests/testthat/test-test-that.R
@@ -124,7 +123,7 @@ expectation_lines <- function(code) {
   }
 
   results <- testthat::with_reporter("silent", code)$expectations()
-  unlist(lapply(results, function(x) x$srcref[1L])) - code_srcref[[1L]][1L]
+  unlist(lapply(results, \(x) x$srcref[1L])) - code_srcref[[1L]][1L]
 }
 
 test_that("patrick reports the correct line numbers", {
@@ -144,80 +143,74 @@ test_that("patrick reports the correct line numbers", {
 })
 
 test_that('patrick gives a deprecation warning for "test_name"', {
-  testthat::expect_warning(
-    with_parameters_test_that(
-      "Warn about `test_name` argument:",
-      {
-        testthat::expect_true(truth)
-      },
-      truth = TRUE,
-      test_name = "true"
-    ),
-    regexp = "deprecated"
-  )
+  with_parameters_test_that(
+    "Warn about `test_name` argument:",
+    {
+      testthat::expect_true(truth)
+    },
+    truth = TRUE,
+    test_name = "true"
+  ) |>
+    testthat::expect_warning(regexp = "deprecated")
 
-  testthat::expect_warning(
-    with_parameters_test_that(
-      "Warn about `test_name` column:",
-      {
-        testthat::expect_true(truth)
-      },
-      .cases = tibble::tribble(
-        ~test_name, ~truth,
-        "true", TRUE
-      )
-    ),
-    regexp = "deprecated"
-  )
+  with_parameters_test_that(
+    "Warn about `test_name` column:",
+    {
+      testthat::expect_true(truth)
+    },
+    .cases = tibble::tribble(
+      ~test_name, ~truth,
+      "true", TRUE
+    )
+  ) |>
+    testthat::expect_warning(regexp = "deprecated")
 })
 
 expectation_names <- function(code) {
   expectations <- testthat::with_reporter("silent", code)$expectations()
-  vapply(expectations, function(e) as.character(e$test), character(1L))
+  vapply(expectations, \(e) as.character(e$test), character(1L))
 }
 
 test_that("glue-formatted descriptions and test names supported", {
-  expect_identical(
-    expectation_names(with_parameters_test_that(
-      "testing for (x, y, z) = ({x}, {y}, {z})",
-      {
-        testthat::expect_gt(x + y + z, 0L)
-      },
-      x = 1:10, y = 2:11, z = 3:12
-    )),
-    sprintf("testing for (x, y, z) = (%d, %d, %d)", 1:10, 2:11, 3:12)
-  )
+  with_parameters_test_that(
+    "testing for (x, y, z) = ({x}, {y}, {z})",
+    {
+      testthat::expect_gt(x + y + z, 0L)
+    },
+    x = 1:10, y = 2:11, z = 3:12
+  ) |>
+    expectation_names() |>
+    expect_identical(
+      sprintf("testing for (x, y, z) = (%d, %d, %d)", 1:10, 2:11, 3:12)
+    )
 
-  expect_identical(
-    expectation_names(with_parameters_test_that(
-      "testing for (x, y, z):",
-      {
-        testthat::expect_gt(x + y + z, 0L)
-      },
-      x = 1:10, y = 2:11, z = 3:12,
-      .test_name = "({x}, {y}, {z})"
-    )),
-    sprintf("testing for (x, y, z): (%d, %d, %d)", 1:10, 2:11, 3:12)
-  )
+  with_parameters_test_that(
+    "testing for (x, y, z):",
+    {
+      testthat::expect_gt(x + y + z, 0L)
+    },
+    x = 1:10, y = 2:11, z = 3:12,
+    .test_name = "({x}, {y}, {z})"
+  ) |>
+    expectation_names() |>
+    expect_identical(
+      sprintf("testing for (x, y, z): (%d, %d, %d)", 1:10, 2:11, 3:12)
+    )
 
-  expect_warning(
-    expect_warning(
-      expect_identical(
-        expectation_names(with_parameters_test_that(
-          "testing for (x, y): ({x}, {y})",
-          {
-            testthat::expect_identical(x, y)
-          },
-          x = list(NULL, 1:10), y = list(NULL, 1:10)
-        )),
-        sprintf(
-          "testing for (x, y): ({x}, {y}) x=%1$s, y=%1$s",
-          c("NULL", toString(1:10))
-        )
-      ),
-      "produced output of length 0"
-    ),
-    "produced output of length 10"
+  with_parameters_test_that(
+    "testing for (x, y): ({x}, {y})",
+    {
+      testthat::expect_identical(x, y)
+    },
+    x = list(NULL, 1:10), y = list(NULL, 1:10)
+  ) |>
+    expectation_names() |>
+    expect_identical(sprintf(
+      "testing for (x, y): ({x}, {y}) x=%1$s, y=%1$s",
+      c("NULL", toString(1:10))
+    )) |>
+    expect_warning("produced output of length 0")
+    expect_warning("produced output of length 10")
   )
 
   # but fail kindly for potential accidental use of glue
