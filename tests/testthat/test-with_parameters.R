@@ -209,7 +209,7 @@ test_that("glue-formatted descriptions and test names supported", {
       "testing for (x, y): ({x}, {y}) x=%1$s, y=%1$s",
       c("NULL", toString(1:10))
     )) |>
-    expect_warning("produced output of length 0")
+    expect_warning("produced output of length 0") |>
     expect_warning("produced output of length 10")
 
   # but fail kindly for potential accidental use of glue
