@@ -25,13 +25,13 @@ same length.}
 \item{.cases}{A data frame where each row contains test parameters.}
 
 \item{.test_name}{An alternative way for providing test names. If provided,
-the name will be appended to the stub description in `desc_stub`. If not
+the name will be appended to the stub description in \code{desc_stub}. If not
 provided, test names will be automatically generated.}
 
-\item{.interpret_glue}{Logical, default `TRUE`. If `FALSE`, and glue-like
-markup in `desc_stub` is ignored, otherwise [glue::glue_data()] is
+\item{.interpret_glue}{Logical, default \code{TRUE}. If \code{FALSE}, and glue-like
+markup in \code{desc_stub} is ignored, otherwise \code{\link[glue:glue]{glue::glue_data()}} is
 attempted to produce a more complete test description.}
 }
 \description{
-We are moving away from this function name in favor of [test_these()].
+We are moving away from this function name in favor of \code{\link[=test_these]{test_these()}}.
 }

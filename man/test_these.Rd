@@ -28,15 +28,15 @@ same length.}
 \item{.cases}{A data frame where each row contains test parameters.}
 
 \item{.test_name}{An alternative way for providing test names. If provided,
-the name will be appended to the stub description in `desc_stub`. If not
+the name will be appended to the stub description in \code{desc_stub}. If not
 provided, test names will be automatically generated.}
 
-\item{.interpret_glue}{Logical, default `TRUE`. If `FALSE`, and glue-like
-markup in `desc_stub` is ignored, otherwise [glue::glue_data()] is
+\item{.interpret_glue}{Logical, default \code{TRUE}. If \code{FALSE}, and glue-like
+markup in \code{desc_stub} is ignored, otherwise \code{\link[glue:glue]{glue::glue_data()}} is
 attempted to produce a more complete test description.}
 }
 \description{
-This function is an extension of [testthat::test_that()] that lets you pass
+This function is an extension of \code{\link[testthat:test_that]{testthat::test_that()}} that lets you pass
 a series of testing parameters. These values are substituted into your
 regular testing code block, making it reusable and reducing duplication.
 }
@@ -44,21 +44,21 @@ regular testing code block, making it reusable and reducing duplication.
 You have a couple of options for passing parameters to you test. You can
 use named vectors/ lists. The function will assert that you have correct
 lengths before proceeding to test execution. Alternatively you can used
-a `data.frame` or list in combination with the splice unquote operator
-\code{\link[rlang]{!!!}}. Last, you can use the constructor `cases()`, which
-is similar to building a `data.frame` rowwise. If you manually build the
-data frame, pass it in the `.cases` argument.
+a \code{data.frame} or list in combination with the splice unquote operator
+\code{\link[rlang]{!!!}}. Last, you can use the constructor \code{cases()}, which
+is similar to building a \code{data.frame} rowwise. If you manually build the
+data frame, pass it in the \code{.cases} argument.
+\subsection{Naming test cases}{
 
-## Naming test cases
-
-If the user passes a character vector as `.test_name`, each instance is
-combined with `desc_stub` to create the completed test name. Similarly, the
-named argument from `cases()` is combined with `desc_stub` to create the
+If the user passes a character vector as \code{.test_name}, each instance is
+combined with \code{desc_stub} to create the completed test name. Similarly, the
+named argument from \code{cases()} is combined with \code{desc_stub} to create the
 parameterized test names. When names aren't provided, they will be
 automatically generated using the test data.
 
 Names follow the pattern of "name=value, name=value" for all elements in a
 test case.
+}
 }
 \examples{
 test_these("trigonometric functions match identities:",

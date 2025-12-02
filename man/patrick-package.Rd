@@ -6,16 +6,16 @@
 \alias{patrick-package}
 \title{Parameterized Unit Testing}
 \description{
-`patrick` (parameterized testing in R is kind of cool!) is a `testthat`
+\code{patrick} (parameterized testing in R is kind of cool!) is a \code{testthat}
 extension that lets you create reusable blocks of a test codes. Parameterized
 tests are often easier to read and more reliable, since they follow the DNRY
 (do not repeat yourself) rule. To do this, define tests with the function
-[test_these()]. Multiple approaches are provided for passing sets of cases.
+\code{\link[=test_these]{test_these()}}. Multiple approaches are provided for passing sets of cases.
 }
 \details{
 This package is inspired by parameterized testing packages in other
 languages, notably the
-[`parameterized`](https://github.com/wolever/parameterized) library in
+\href{https://github.com/wolever/parameterized}{\code{parameterized}} library in
 Python.
 }
 \examples{
