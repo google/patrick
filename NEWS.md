@@ -4,6 +4,8 @@
    for 7 years at the help as package creator and maintainer!
 *  Minor fix in the test suite to adapt to {testthat} 3.3.0. Thanks @hadley!
 *  Require R >= 4.1.0, which {testthat} 3.3.0 does as well.
+*  We're switching the default API to a terser option: `test_these()`. (#22)
+   Thanks for the suggestion @hadley!
 
 # patrick (0.3.0)
 

@@ -18,8 +18,7 @@
 #' extension that lets you create reusable blocks of a test codes. Parameterized
 #' tests are often easier to read and more reliable, since they follow the DNRY
 #' (do not repeat yourself) rule. To do this, define tests with the function
-#' [with_parameters_test_that()]. Multiple approaches are provided for passing
-#' sets of cases.
+#' [test_these()]. Multiple approaches are provided for passing sets of cases.
 #'
 #' This package is inspired by parameterized testing packages in other
 #' languages, notably the
@@ -32,5 +31,5 @@
 #' @importFrom rlang abort cnd_muffle enquo eval_tidy warn
 #' @importFrom testthat test_that
 #' @importFrom tibble add_column tibble
-#' @inherit with_parameters_test_that examples
+#' @inherit test_these examples
 "_PACKAGE"

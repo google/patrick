@@ -10,8 +10,7 @@
 extension that lets you create reusable blocks of a test codes. Parameterized
 tests are often easier to read and more reliable, since they follow the DNRY
 (do not repeat yourself) rule. To do this, define tests with the function
-\code{\link[=with_parameters_test_that]{with_parameters_test_that()}}. Multiple approaches are provided for passing
-sets of cases.
+\code{\link[=test_these]{test_these()}}. Multiple approaches are provided for passing sets of cases.
 }
 \details{
 This package is inspired by parameterized testing packages in other
@@ -20,7 +19,7 @@ languages, notably the
 Python.
 }
 \examples{
-with_parameters_test_that("trigonometric functions match identities:",
+test_these("trigonometric functions match identities:",
   {
     testthat::expect_equal(expr, numeric_value)
   },
@@ -30,7 +29,7 @@ with_parameters_test_that("trigonometric functions match identities:",
 )
 
 # Run the same test with the cases() constructor
-with_parameters_test_that(
+test_these(
   "trigonometric functions match identities",
   {
     testthat::expect_equal(expr, numeric_value)
@@ -43,7 +42,7 @@ with_parameters_test_that(
 )
 
 # If names aren't provided, they are automatically generated.
-with_parameters_test_that(
+test_these(
   "trigonometric functions match identities",
   {
     testthat::expect_equal(expr, numeric_value)
@@ -67,7 +66,7 @@ make_cases <- function() {
   )
 }
 
-with_parameters_test_that(
+test_these(
   "trigonometric functions match identities",
   {
     testthat::expect_equal(expr, numeric_value)

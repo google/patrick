@@ -50,7 +50,7 @@
 #'   markup in `desc_stub` is ignored, otherwise [glue::glue_data()] is
 #'   attempted to produce a more complete test description.
 #' @examples
-#' with_parameters_test_that("trigonometric functions match identities:",
+#' test_these("trigonometric functions match identities:",
 #'   {
 #'     testthat::expect_equal(expr, numeric_value)
 #'   },
@@ -60,7 +60,7 @@
 #' )
 #'
 #' # Run the same test with the cases() constructor
-#' with_parameters_test_that(
+#' test_these(
 #'   "trigonometric functions match identities",
 #'   {
 #'     testthat::expect_equal(expr, numeric_value)
@@ -73,7 +73,7 @@
 #' )
 #'
 #' # If names aren't provided, they are automatically generated.
-#' with_parameters_test_that(
+#' test_these(
 #'   "trigonometric functions match identities",
 #'   {
 #'     testthat::expect_equal(expr, numeric_value)
@@ -97,7 +97,7 @@
 #'   )
 #' }
 #'
-#' with_parameters_test_that(
+#' test_these(
 #'   "trigonometric functions match identities",
 #'   {
 #'     testthat::expect_equal(expr, numeric_value)
@@ -106,12 +106,12 @@
 #' )
 #' @importFrom dplyr .data
 #' @export
-with_parameters_test_that <- function(desc_stub,
-                                      code,
-                                      ...,
-                                      .cases = NULL,
-                                      .test_name = NULL,
-                                      .interpret_glue = TRUE) {
+test_these <- function(desc_stub,
+                       code,
+                       ...,
+                       .cases = NULL,
+                       .test_name = NULL,
+                       .interpret_glue = TRUE) {
   stopifnot(
     is.logical(.interpret_glue),
     length(.interpret_glue) == 1L,
@@ -128,7 +128,7 @@ with_parameters_test_that <- function(desc_stub,
   if ("test_name" %in% names(all_pars)) {
     msg <- paste(
       'The argument and cases column "test_name" is deprecated. Please use the',
-      "new `.test_name` argument instead. See `?with_parameters_test_that`",
+      "new `.test_name` argument instead. See `?test_these`",
       "for more information"
     )
     warn(msg, class = "patrick_test_name_deprecation")
@@ -215,7 +215,7 @@ build_and_run_test <- function(
   )
 }
 
-#' @rdname with_parameters_test_that
+#' @rdname test_these
 #' @export
 cases <- function(...) {
   all_cases <- list(...)
