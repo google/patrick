@@ -1,6 +1,6 @@
 Package: patrick
 Title: Parameterized Unit Testing
-Version: 0.3.0.9000
+Version: 0.3.1
 Authors@R: c(
     person(given = "Michael",
            family = "Quinn",
@@ -24,6 +24,4 @@ Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.3
 NeedsCompilation: no
-Packaged: 2020-10-27 18:23:21 UTC; msquinn
 Repository: CRAN
-Date/Publication: 2020-10-27 18:50:03 UTC
