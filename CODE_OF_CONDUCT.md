@@ -69,7 +69,7 @@ dispute. If you are unable to resolve the matter for any reason, or if the
 behavior is threatening or harassing, report it. We are dedicated to providing
 an environment where participants feel welcome and safe.
 
-Reports should be directed to Michael Quinn [msquinn@google.com], the Project
+Reports should be directed to Michael Chirico [chiricom@google.com], the Project
 Steward(s) for `patrick`. It is the Project Steward’s duty to receive and
 address reported violations of the code of conduct. They will then work with a
 committee consisting of representatives from the Open Source Programs Office and
